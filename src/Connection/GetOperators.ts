@@ -1,5 +1,5 @@
 import axios from "axios";
-import { opApiConnection, token } from '@/Connecion/ConnectionStrings';
+import { opApiConnection, token } from '@/Connection/ConnectionStrings';
 
 export const getOperators = async () => {
     const response = await axios.get(
