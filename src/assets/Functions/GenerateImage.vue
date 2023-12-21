@@ -2,7 +2,7 @@
   <div>
     <img
       :src="generateInitialsImage"
-      class="w-14 h-14 rounded-[50%] object-cover"
+      class="w-10 h-10 rounded-full object-cover"
       alt="Initials Image"
     />
   </div>
