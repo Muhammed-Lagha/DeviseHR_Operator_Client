@@ -1,22 +1,22 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="30"
-    height="30"
-    fill="currentcolor"
-    viewBox="0 0 20 25"
+    class="h-5 w-5 mr-1"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
   >
     <path
-      d="M1.667 24.247h10c.442 0 .865-.181 1.178-.503a1.74 1.74 0 0 0 .488-1.211V19.96h-1.666v2.572h-10V1.96h10v2.572h1.666V1.96c0-.454-.176-.89-.488-1.211a1.645 1.645 0 0 0-1.178-.503h-10A1.644 1.644 0 0 0 .489.75 1.741 1.741 0 0 0 0 1.96v20.572c0 .454.176.89.489 1.211a1.64 1.64 0 0 0 1.178.503Z"
-    />
-    <path
-      d="m13.822 16.178 2.988-3.074H5V11.39h11.81l-2.988-3.074L15 7.104l5 5.143-5 5.143-1.178-1.212Z"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
     />
   </svg>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'Logout',
-};
+  name: 'Logout'
+}
 </script>

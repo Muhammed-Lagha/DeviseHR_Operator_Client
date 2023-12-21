@@ -1,11 +1,5 @@
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="30"
-    height="30"
-    fill="currentColor"
-    viewBox="0 0 24 24"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
     <g clip-path="url(#a)">
       <path
         fill="currentColor"
@@ -26,6 +20,6 @@
 
 <script lang="ts">
 export default {
-  name: 'Analytics',
-};
+  name: 'Analytics'
+}
 </script>
