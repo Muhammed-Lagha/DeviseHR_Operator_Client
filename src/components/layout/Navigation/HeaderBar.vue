@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useSidebar } from '../../../hooks/useSidebar'
+import { useSidebar } from '@/hooks/useSidebar'
 import { useRouter } from 'vue-router'
-import BurgerIcon from '../../icons/TopNav/burger menu/BurgerIcon.vue'
-import BellIcon from '../../icons/TopNav/Bell/BellIcon.vue'
-import ArrowIcon from '../../icons/TopNav/P&A/ArrowIcon.vue'
-import PlusIcon from '../../icons/TopNav/P&A/PlusIcon.vue'
-import SearchIcon from '../../icons/TopNav/Search/Search.vue'
-import Operator from '../../icons/TopNav/Operator/OperatorIcon.vue'
-import company from '../../icons/TopNav/company/Company.vue'
-import NoteIcon from '../../icons/TopNav/Note/NoteIcon.vue'
-import ProfileIcon from '../../icons/TopNav/user Profile/ProfileIcon.vue'
-import Settings from '../../icons/TopNav/Settings/Settings.vue'
-import Logout from '../../icons/SideNav/Logout.vue'
+import BurgerIcon from '@/components/icons/TopNav/burger menu/BurgerIcon.vue'
+import BellIcon from '@/components/icons/TopNav/Bell/BellIcon.vue'
+import ArrowIcon from '@/components/icons/TopNav/P&A/ArrowIcon.vue'
+import PlusIcon from '@/components/icons/TopNav/P&A/PlusIcon.vue'
+import SearchIcon from '@/components/icons/TopNav/Search/Search.vue'
+import Operator from '@/components/icons/TopNav/Operator/OperatorIcon.vue'
+import company from '@/components/icons/TopNav/company/Company.vue'
+import NoteIcon from '@/components/icons/TopNav/Note/NoteIcon.vue'
+import ProfileIcon from '@/components/icons/TopNav/user Profile/ProfileIcon.vue'
+import Settings from '@/components/icons/TopNav/Settings/Settings.vue'
+import Logout from '@/components/icons/SideNav/Logout.vue'
 
 
 const dropdownOpen = ref(false)
@@ -190,7 +190,7 @@ const createNew = ref(false)
         >
           <img
             class="object-cover w-full h-full "
-            src="https://images.unsplash.com/photo-1528892952291-009c663ce843?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=296&q=80"
+            src='https://avatars.githubusercontent.com/u/114949720?v=4'
             alt="Your avatar"
           />
         </button>
