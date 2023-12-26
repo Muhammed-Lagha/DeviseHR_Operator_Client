@@ -1,0 +1,10 @@
+
+<template>
+    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"><path fill="currentColor" d="M17 19h-2q-.425 0-.712-.288T14 18q0-.425.288-.712T15 17h2v-2q0-.425.288-.712T18 14q.425 0 .713.288T19 15v2h2q.425 0 .713.288T22 18q0 .425-.288.713T21 19h-2v2q0 .425-.288.713T18 22q-.425 0-.712-.288T17 21zM5 20q-.825 0-1.412-.587T3 18V6q0-.825.588-1.412T5 4h1V3q0-.425.288-.712T7 2q.425 0 .713.288T8 3v1h6V3q0-.425.288-.712T15 2q.425 0 .713.288T16 3v1h1q.825 0 1.413.588T19 6v6.1q-.5-.075-1-.075t-1 .075V10H5v8h7q0 .5.075 1t.275 1zM5 8h12V6H5zm0 0V6z"></path></svg>
+  </template>
+  
+  <script lang="ts">
+  export default {
+    name: 'MaterialSymbolsCalendarAddOnOutlineRounded'
+  }
+  </script>
