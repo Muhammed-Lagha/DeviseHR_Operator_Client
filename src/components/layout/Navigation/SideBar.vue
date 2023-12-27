@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import Operator from '@/components/icons/SideNav/Operator.vue'
+import company from '@/components/icons/SideNav/Companies.vue'
+
+import { RouterLink } from 'vue-router'
+import { ref } from 'vue'
+import { useSidebar } from '@/hooks/useSidebar'
+
+const { isOpen } = useSidebar()
+const activeClass = ref('bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100')
+const inactiveClass = ref(
+  'border-blue-900 text-gray-400 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100'
+)
+</script>
 <template>
   <div class="flex">
     <!-- Backdrop -->
@@ -10,11 +24,13 @@
 
     <div
       :class="isOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'"
-      class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-gray-900 lg:translate-x-0 lg:static lg:inset-0"
+      class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-blue-900 lg:translate-x-0 lg:static lg:inset-0"
     >
       <div class="flex items-center justify-center mt-8">
         <div class="flex items-center">
-          <span class="mx-2 text-2xl font-semibold text-white">Devise<span class="text-indigo-400">HR</span></span>
+          <span class="mx-2 text-2xl font-semibold text-white"
+            >Devise<span class="text-indigo-400">HR</span></span
+          >
         </div>
       </div>
 
@@ -51,9 +67,16 @@
 
           <span class="mx-4">Operators</span>
         </router-link>
+        <!-- <router-link
+          class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
+          :class="[$route.name === 'companies' ? activeClass : inactiveClass]"
+          to="/companies"
+        >
+          <Operator />
+
+          <span class="mx-4">Companies</span>
+        </router-link> -->
         <p class="pl-4 my-2 text-xs font-semibold mb-4 text-gray-400">Ui Elements</p>
-
-
 
         <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
@@ -84,6 +107,7 @@
           <span class="mx-4">CreateOperator</span>
         </router-link>
 
+        <p class="pl-4 text-xs my-2 font-semibold mb-4 text-gray-400">About</p>
         <!-- <router-link
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
           :class="[$route.name === 'Cards' ? activeClass : inactiveClass]"
@@ -156,7 +180,7 @@
 
           <span class="mx-4">Blank</span>
         </router-link> -->
-        <p class="pl-4 text-xs my-2 font-semibold mb-4 text-gray-400">About</p>
+
         <!-- <a
           target="_blank"
           class="flex items-center px-6 py-2 mt-4 duration-200 border-l-4"
@@ -180,18 +204,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import Operator from '@/components/icons/SideNav/Operator.vue'
-import company from '@/components/icons/SideNav/Companies.vue'
-
-import { RouterLink } from 'vue-router'
-import { ref } from 'vue'
-import { useSidebar } from '@/hooks/useSidebar'
-
-const { isOpen } = useSidebar()
-const activeClass = ref('bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100')
-const inactiveClass = ref(
-  'border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100'
-)
-</script>

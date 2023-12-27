@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useSidebar } from '@/hooks/useSidebar'
-import { useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import BurgerIcon from '@/components/icons/TopNav/burger menu/BurgerIcon.vue'
 import BellIcon from '@/components/icons/TopNav/Bell/BellIcon.vue'
 import ArrowIcon from '@/components/icons/TopNav/P&A/ArrowIcon.vue'
@@ -14,9 +14,9 @@ import ProfileIcon from '@/components/icons/TopNav/user Profile/ProfileIcon.vue'
 import Settings from '@/components/icons/TopNav/Settings/Settings.vue'
 import Logout from '@/components/icons/SideNav/Logout.vue'
 
-
 const dropdownOpen = ref(false)
 const { isOpen } = useSidebar()
+// sate variables
 const notificationOpen = ref(false)
 const createNew = ref(false)
 </script>
@@ -30,19 +30,19 @@ const createNew = ref(false)
       <button @click="isOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
         <burgerIcon />
       </button>
-        <!-- search -->
-      <div class="max-w-md mx-4">
+      <!-- search -->
+      <div class="max-w-full mx-4">
         <div
-          class="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden"
+          class="relative flex items-center w-full h-12 border-[1px] border-gray-400 rounded-lg focus:border-indigo-600 focus-within:shadow-lg bg-white overflow-hidden"
         >
           <div class="grid place-items-center h-full w-12 text-gray-300">
             <searchIcon />
           </div>
 
           <input
-            class="w-full outline-none text-sm text-gray-700 pr-2"
+            class="max-w-96 outline-none text-sm text-gray-700 pr-2"
             type="text"
-            placeholder="Search something.."
+            placeholder="Search DeviseHR"
           />
         </div>
       </div>
@@ -59,16 +59,22 @@ const createNew = ref(false)
             <PlusIcon />
             <ArrowIcon />
           </button>
+
+          <div
+            v-show="createNew"
+            @click="createNew = false"
+            class="fixed inset-0 h-full w-full z-10"
+          ></div>
+
           <div
             v-show="createNew"
             class="absolute right-0 mt-2 w-44 py-3 bg-white rounded-lg shadow-xl overflow-hidden z-10"
             style="width: 11rem"
           >
-            <RouterLink
-              to="/CreateOperator"
-              class="flex items-center justify-center  text-gray-600"
-            >
-              <div class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600">
+            <RouterLink to="/CreateOperator" class="flex items-center justify-center text-gray-600">
+              <div
+                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600"
+              >
                 <operator />
                 <span class="mx-2 text-xs font-semibold flex flex-row justify-between">
                   Create Operator
@@ -76,11 +82,10 @@ const createNew = ref(false)
               </div>
             </RouterLink>
 
-            <RouterLink
-              to="/CreateCompany"
-              class="flex items-center justify-center  text-gray-600 "
-            >
-              <div class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600">
+            <RouterLink to="/CreateCompany" class="flex items-center justify-center text-gray-600">
+              <div
+                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600"
+              >
                 <company />
                 <span class="mx-2 text-xs font-semibold flex flex-row justify-between">
                   Create Company
@@ -92,16 +97,18 @@ const createNew = ref(false)
               to="/CreateCompany"
               class="flex items-center justify-center text-gray-600 hover:text-white"
             >
-              <div class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600">
+              <div
+                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600"
+              >
                 <NoteIcon />
-                <span class="mx-5 text-xs  font-semibold flex flex-row justify-between">
+                <span class="mx-5 text-xs font-semibold flex flex-row justify-between">
                   Create Note
                 </span>
               </div>
             </RouterLink>
           </div>
         </div>
-          <!-- Notification -->
+        <!-- Notification -->
         <div class="relative">
           <button
             @click="notificationOpen = !notificationOpen"
@@ -183,14 +190,13 @@ const createNew = ref(false)
       </div>
       <!-- Avatar -->
       <div class="relative">
-        
         <button
           @click="dropdownOpen = !dropdownOpen"
           class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"
         >
           <img
-            class="object-cover w-full h-full "
-            src='https://avatars.githubusercontent.com/u/114949720?v=4'
+            class="object-cover w-full h-full"
+            src="https://avatars.githubusercontent.com/u/114949720?v=4"
             alt="Your avatar"
           />
         </button>
@@ -219,12 +225,12 @@ const createNew = ref(false)
               <ProfileIcon />
               Profile</a
             >
-            <a
-              href="#"
+            <RouterLink
+              to="/Settings"
               class="flex rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
             >
-             <settings />
-              Settings</a
+              <settings />
+              Settings</RouterLink
             >
             <router-link
               to="/"
