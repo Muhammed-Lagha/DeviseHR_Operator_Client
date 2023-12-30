@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { useSidebar } from '@/hooks/useSidebar'
 import { RouterLink } from 'vue-router'
 import BurgerIcon from '@/components/icons/TopNav/burger menu/BurgerIcon.vue'
-import BellIcon from '@/components/icons/TopNav/Bell/BellIcon.vue'
 import ArrowIcon from '@/components/icons/TopNav/P&A/ArrowIcon.vue'
 import PlusIcon from '@/components/icons/TopNav/P&A/PlusIcon.vue'
 import SearchIcon from '@/components/icons/TopNav/Search/Search.vue'
@@ -11,14 +10,17 @@ import Operator from '@/components/icons/TopNav/Operator/OperatorIcon.vue'
 import company from '@/components/icons/TopNav/company/Company.vue'
 import NoteIcon from '@/components/icons/TopNav/Note/NoteIcon.vue'
 import ProfileIcon from '@/components/icons/TopNav/user Profile/ProfileIcon.vue'
-import Settings from '@/components/icons/TopNav/Settings/Settings.vue'
 import Logout from '@/components/icons/SideNav/Logout.vue'
+//import BellIcon from '@/components/icons/TopNav/Bell/BellIcon.vue'
+//import Settings from '@/components/icons/TopNav/Settings/Settings.vue'
 
-const dropdownOpen = ref(false)
 const { isOpen } = useSidebar()
 // sate variables
-const notificationOpen = ref(false)
-const createNew = ref(false)
+// const notificationOpen = ref(false)
+// const createNew = ref(false)
+// const dropdownOpen = ref(false)
+
+const selectedButton = ref(-1)
 </script>
 
 <template>
@@ -54,20 +56,20 @@ const createNew = ref(false)
         <div class="relative">
           <button
             class="flex p-1 text-gray-600 border-[1px] border-black rounded-md focus:outline-none"
-            @click="createNew = !createNew"
+            @click="selectedButton = 0"
           >
             <PlusIcon />
             <ArrowIcon />
           </button>
 
           <div
-            v-show="createNew"
-            @click="createNew = false"
+            v-show="selectedButton === 0"
+            @click="selectedButton = -1"
             class="fixed inset-0 h-full w-full z-10"
           ></div>
 
           <div
-            v-show="createNew"
+            v-show="selectedButton === 0"
             class="absolute right-0 mt-2 w-44 py-3 bg-white rounded-lg shadow-xl overflow-hidden z-10"
             style="width: 11rem"
           >
@@ -109,7 +111,7 @@ const createNew = ref(false)
           </div>
         </div>
         <!-- Notification -->
-        <div class="relative">
+        <!-- <div class="relative">
           <button
             @click="notificationOpen = !notificationOpen"
             class="flex mr-4 p-1 text-gray-600 border-[1px] border-black rounded-md focus:outline-none"
@@ -186,12 +188,12 @@ const createNew = ref(false)
               </p>
             </a>
           </div>
-        </div>
+        </div> -->
       </div>
       <!-- Avatar -->
-      <div class="relative">
+      <div class="relative py-2 px-4">
         <button
-          @click="dropdownOpen = !dropdownOpen"
+          @click="selectedButton = 1"
           class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"
         >
           <img
@@ -201,8 +203,8 @@ const createNew = ref(false)
           />
         </button>
         <div
-          v-show="dropdownOpen"
-          @click="dropdownOpen = false"
+          v-show="selectedButton === 1"
+          @click="selectedButton = -1"
           class="fixed inset-0 z-10 w-full h-full"
         ></div>
 
@@ -215,7 +217,7 @@ const createNew = ref(false)
           leave-to-class="scale-95 opacity-0"
         >
           <div
-            v-show="dropdownOpen"
+            v-show="selectedButton === 1"
             class="absolute right-0 z-20 w-48 py-1 mt-2 bg-white rounded-lg shadow-xl"
           >
             <a
@@ -225,13 +227,13 @@ const createNew = ref(false)
               <ProfileIcon />
               Profile</a
             >
-            <RouterLink
+            <!-- <RouterLink
               to="/Settings"
               class="flex rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
             >
               <settings />
               Settings</RouterLink
-            >
+            > -->
             <router-link
               to="/"
               class="flex px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"

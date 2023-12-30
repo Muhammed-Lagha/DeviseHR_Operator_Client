@@ -2,7 +2,6 @@
 import { onMounted, ref, type Ref } from 'vue';
 import type { opMembers } from '@/Types/Operators';
 import { RouterLink } from 'vue-router';
-import { GeneratedIdentifierFlags } from 'typescript';
 import GenerateImage from '@/assets/Functions/GenerateImage.vue';
 import { getOperators } from '@/Connection/GetOperators';
 

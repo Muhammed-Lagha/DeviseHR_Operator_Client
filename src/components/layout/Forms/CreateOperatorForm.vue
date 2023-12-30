@@ -1,7 +1,30 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+interface Operator {
+  firstName: string
+  lastName: string
+  userRole: string
+  email: string
+  sendRegistration: boolean
+}
+
+const user = ref<Operator>({
+  firstName: '',
+  lastName: '',
+  userRole: '',
+  email: '',
+  sendRegistration: false
+})
+
+const register = () => {
+  const data = JSON.parse(JSON.stringify(user.value))
+  console.log('Registered: ', data)
+}
+</script>
 <template>
   <div class="mt-4">
     <div class="w-full max-w-1/3 overflow-hidden bg-white border rounded-md shadow-md">
-      <form class="">
+      <form @submit.prevent="register">
         <div class="flex items-center justify-between px-5 py-3 text-gray-700 border-b">
           <h3 class="text-sm text-gray-600">Create Operator</h3>
         </div>
@@ -23,6 +46,7 @@
 
               <input
                 type="text"
+                v-model="user.firstName"
                 class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
               />
             </div>
@@ -44,6 +68,7 @@
 
               <input
                 type="text"
+                v-model="user.lastName"
                 class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
               />
             </div>
@@ -65,6 +90,7 @@
 
               <input
                 type="Email"
+                v-model="user.email"
                 class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
               />
             </div>
@@ -86,6 +112,7 @@
 
               <select
                 name="UserRole"
+                v-model="user.userRole"
                 class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
               >
                 <option>Admin</option>
@@ -98,7 +125,7 @@
         <!-- footer -->
         <div class="flex items-center justify-between px-5 py-3">
           <div>
-            <input type="checkbox" name="sendRegistration" />
+            <input type="checkbox" name="sendRegistration" v-model="user.sendRegistration" />
             <label for="vehicle1"> Send Registration </label>
           </div>
           <button
@@ -111,5 +138,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
