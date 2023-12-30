@@ -29,6 +29,7 @@ onMounted(() => {
         backgroundColor: "#F4BD50",
         borderRadius: 6,
         borderSkipped: false,
+        barThickness: 8
       },
     ],
   },
@@ -56,32 +57,32 @@ onMounted(() => {
         backgroundColor: "#27292D",
       },
     },
-    scales: {
-      x: {
-        border: {
-          dash: [2, 4],
-        },
-        grid: {
-          color: "#27292D",
-        },
-        title: {
-          text: "2023",
-        },
-      },
-      y: {
-        grid: {
-          color: "#27292D",
-        },
-        border: {
-          dash: [2, 4],
-        },
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: "Revenue (million [$])",
-        },
-      },
-    },
+    // scales: {
+    //   x: {
+    //     border: {
+    //       dash: [2, 4],
+    //     },
+    //     grid: {
+    //       color: "#27292D",
+    //     },
+    //     title: {
+    //       text: "2023",
+    //     },
+    //   },
+    //   y: {
+    //     grid: {
+    //       color: "#27292D",
+    //     },
+    //     border: {
+    //       dash: [2, 4],
+    //     },
+    //     beginAtZero: true,
+    //     title: {
+    //       display: true,
+    //       text: "Revenue (million [$])",
+    //     },
+    //   },
+    // },
   },
   });
 });
@@ -89,7 +90,7 @@ onMounted(() => {
 
 <template>
   
-  <div class="w-full rounded-3xl bg-[#1E2023] p-4 max-w-2xl min-w-[300px]">
+  <div class="w-full rounded-3xl bg-[#fdfeff] max-h-96 p-4 max-w-2xl min-w-[300px]">
     <canvas class="min-h-[300px]" ref="myChart" id="myChart"></canvas>
   </div>
 </template>
