@@ -53,7 +53,6 @@ const saveSettings = () => {
               <input
                 class="checkbox-input"
                 id="DetailsOptionCheckbox1"
-                checked="checked"
                 type="checkbox"
               />
               <label class="checkbox ion-ios-checkmark-empty" for="DetailsOptionCheckbox1"></label>

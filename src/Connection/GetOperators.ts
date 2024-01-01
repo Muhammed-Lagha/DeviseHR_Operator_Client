@@ -1,5 +1,5 @@
 import axios from "axios";
-import { opApiConnection, token } from '@/Connection/ConnectionStrings';
+import { opApiConnection } from '@/Connection/ConnectionStrings';
 
 export const getOperators = async () => {
     const response = await axios.get(
@@ -7,7 +7,7 @@ export const getOperators = async () => {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`
           },
         },);
     return response.data.data

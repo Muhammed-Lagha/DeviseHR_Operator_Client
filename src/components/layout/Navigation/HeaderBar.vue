@@ -10,15 +10,10 @@ import Operator from '@/components/icons/TopNav/Operator/OperatorIcon.vue'
 import company from '@/components/icons/TopNav/company/Company.vue'
 import NoteIcon from '@/components/icons/TopNav/Note/NoteIcon.vue'
 import ProfileIcon from '@/components/icons/TopNav/user Profile/ProfileIcon.vue'
+import GenerateImage from '@/assets/Functions/GenerateImage.vue'
 import Logout from '@/components/icons/SideNav/Logout.vue'
-//import BellIcon from '@/components/icons/TopNav/Bell/BellIcon.vue'
-//import Settings from '@/components/icons/TopNav/Settings/Settings.vue'
 
 const { isOpen } = useSidebar()
-// sate variables
-// const notificationOpen = ref(false)
-// const createNew = ref(false)
-// const dropdownOpen = ref(false)
 
 const selectedButton = ref(-1)
 </script>
@@ -196,9 +191,13 @@ const selectedButton = ref(-1)
           @click="selectedButton = 1"
           class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"
         >
+          <div :class="user?.profile_picture === null">
+            <GenerateImage :firstName="user?.first_name" :lastName="user?.last_name" />
+          </div>
           <img
             class="object-cover w-full h-full"
-            src="https://avatars.githubusercontent.com/u/114949720?v=4"
+            :class="user?.profile_picture === null ? 'hidden' : 'block'"
+            :src="user?.profile_picture"
             alt="Your avatar"
           />
         </button>
@@ -243,6 +242,11 @@ const selectedButton = ref(-1)
             >
           </div>
         </transition>
+      </div>
+      <div class="">
+        <h1 class="text-2xl font-bold text-gray-700">
+          {{ user?.first_name }} {{ user?.last_name }}
+        </h1>
       </div>
     </div>
   </header>

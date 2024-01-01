@@ -4,18 +4,26 @@ import HomeView from '@/views/HomeView.vue'
 import OperatorsView from '@/views/OperatorsView.vue'
 import CreateCompany from "@/views/CreateCompany.vue";
 import CreateOperator from "@/views/CreateOperator.vue";
-import ProfileView from '@/views/ProfileView.vue';
+import ProfileOpView from '@/views/ProfileOpView.vue';
+// import ProfileUserView from '@/views/ProfileUsersView.vue'
+// import ProfileComView from '@/views/ProfileComView.vue'
 import NotFound from '@/views/NotFound.vue';
+import UiElements from '@/views/UiElements.vue'
 //import SettingsView from '@/views/SettingsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
+      path: "/login",
       name: "Login",
       component: Login,
       meta: { layout: "empty" },
+    },
+    {
+      path: "/",
+      name: "home",
+      component: HomeView,
     },
     {
       path: '/Home',
@@ -29,10 +37,20 @@ const router = createRouter({
       component: OperatorsView
     },
     {
-      path: '/operators/:id',
+      path: '/operator/:id',
       name: 'userProfile',
-      component:  ProfileView
+      component:  ProfileOpView
     },
+    // {
+    //   path: '/companies/:id',
+    //   name: 'companyProfile',
+    //   component:  ProfileComView
+    // },
+    // {
+    //   path: '/users/:id',
+    //   name: 'userProfile',
+    //   component:  ProfileUserView
+    // },
     // {
     //   path: '/Settings',
     //   name: 'Settings',
@@ -48,7 +66,12 @@ const router = createRouter({
       name: 'CreateOperator',
       component: CreateOperator
     },
-    { path: "/:pathMatch(.*)*", component: NotFound },
+    {
+      path: '/UiElements',
+      name: 'UIElement',
+      component : UiElements
+    },
+    { path: "/:pathMatch(.*)*", component: NotFound, meta: { layout: "empty" }, },
   ]
 })
 
