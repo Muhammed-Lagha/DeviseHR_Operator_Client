@@ -1,39 +1,21 @@
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
-import type { opMembers } from '@/Types/Operators';
-import { RouterLink } from 'vue-router';
-import GenerateImage from '@/assets/Functions/GenerateImage.vue';
-import { getOperators } from '@/Connection/GetOperators';
+import { onMounted, ref } from 'vue'
+import type { opMembers } from '@/Types/Operators'
+import { RouterLink } from 'vue-router'
+import GenerateImage from '@/assets/Functions/GenerateImage.vue'
+import { getOperators } from '@/Connection/GetOperators'
+import { getAuthToken } from '@/helpers/getTokens'
+import { formatDate } from '@/helpers/formatDate'
 
-
-const getTeamMembers = async () => {
-  teamMembers.value = await getOperators()
-}
 onMounted(async () => {
-  await getTeamMembers()
+  const token = getAuthToken()
+  if (token) teamMembers.value = await getOperators(token)
 })
 
 const teamMembers = ref<opMembers[]>([])
-
-
-
-function formatDate<ref>(dateString: string): string {
-  // Parse the date string
-  const date = new Date(dateString)
-
-  // Extract the year, month, and day
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1 // Months are zero-indexed
-  const day = date.getDate()
-
-  // Format the date as "dd/mm/yy"
-  return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`
-}
-
 </script>
 
 <template>
- 
   <div class="flex flex-col mt-2">
     <div class="py-2 my-2 mx-0 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-6 lg:px-1">
       <div
@@ -72,8 +54,11 @@ function formatDate<ref>(dateString: string): string {
           </thead>
 
           <tbody class="bg-white">
-            <tr class="hover:rounded-md hover:shadow-[rgba(0,_0,_0,_0.05)_0px_6px_24px_0px,_rgba(0,_0,_0,_0.08)_0px_0px_0px_1px] transition-all duration-200"
-             v-for="(u, index) in teamMembers" :key="index">
+            <tr
+              class="hover:rounded-md hover:shadow-[rgba(0,_0,_0,_0.05)_0px_6px_24px_0px,_rgba(0,_0,_0,_0.08)_0px_0px_0px_1px] transition-all duration-200"
+              v-for="(u, index) in teamMembers"
+              :key="index"
+            >
               <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="flex-shrink-0 w-10 h-10">

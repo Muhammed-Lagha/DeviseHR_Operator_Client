@@ -21,6 +21,20 @@ export const getTokensFromCookies = () => {
   return [val1, val2]
 }
 
+export const getAuthToken = () : string | null => {
+  const cookies = document.cookie.split(";");
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split("=");
+
+    if (name === "token") {
+      return decodeURIComponent(value);
+    }
+  }
+
+  return null;
+}
+
 export const addTokensToCookies = (token: string, refreshToken: string) => {
   document.cookie = `token=${encodeURIComponent(token)}`;
   document.cookie = `refreshToken=${encodeURIComponent(refreshToken)}`;

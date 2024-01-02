@@ -5,6 +5,8 @@ import { addTokensToCookies } from '@/helpers/getTokens'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+const showAlert = ref(false)
+const alertMessage = ref('')
 const router = useRouter()
 
 const email = ref('sudo@devisehr.com')
@@ -19,12 +21,21 @@ const login = async () => {
     addTokensToCookies(data.token, data.refreshToken)
     router.push('/Home')
   } else {
-    alert(data.message)
+    showAlert.value = true
+    alertMessage.value = 'Invalid email or password'
   }
 }
 </script>
 
 <template>
+  <el-alert
+    v-if="showAlert"
+    :title="alertMessage"
+    type="error"
+    description="Please try again"
+    show-icon
+  />
+
   <div class="flex items-center justify-center h-screen px-6 bg-gray-200">
     <div class="w-full max-w-sm p-6 bg-white rounded-md shadow-md">
       <div class="flex items-center justify-center">
@@ -38,7 +49,7 @@ const login = async () => {
           <span class="text-sm text-gray-700">Email</span>
           <input
             type="email"
-            class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+            class="block w-full mt-1 border-gray-200 rounded-md email"
             v-model="email"
           />
         </label>
@@ -55,10 +66,7 @@ const login = async () => {
         <div class="flex items-center justify-between mt-4">
           <div>
             <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                class="text-indigo-600 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-              />
+              <input type="checkbox" class="text-indigo-600 rounded-md focus:ring" />
               <span class="mx-2 text-sm text-gray-600">Remember me</span>
             </label>
           </div>
@@ -82,3 +90,25 @@ const login = async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+el-alert {
+  margin: 20px 0 0;
+}
+.el-alert:first-child {
+  margin: 0;
+}
+
+.email {
+  border: solid #bbb 1px;
+  padding: 0.2rem 0.3rem;
+  transition: all 0.3s ease;
+}
+
+.email:focus {
+  outline: none;
+  border: solid red 1px;
+  color: peru;
+  transition: all 0.3s ease;
+}
+</style>
