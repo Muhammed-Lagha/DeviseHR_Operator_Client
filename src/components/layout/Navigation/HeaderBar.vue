@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router'
 import BurgerIcon from '@/components/icons/TopNav/burger menu/BurgerIcon.vue'
 import ArrowIcon from '@/components/icons/TopNav/P&A/ArrowIcon.vue'
 import PlusIcon from '@/components/icons/TopNav/P&A/PlusIcon.vue'
-import SearchIcon from '@/components/icons/TopNav/Search/Search.vue'
+import SearchComp from '@/components/layout/Navigation/SearchComp.vue'
 import Operator from '@/components/icons/TopNav/Operator/OperatorIcon.vue'
 import company from '@/components/icons/TopNav/company/Company.vue'
 import NoteIcon from '@/components/icons/TopNav/Note/NoteIcon.vue'
@@ -13,6 +13,24 @@ import ProfileIcon from '@/components/icons/TopNav/user Profile/ProfileIcon.vue'
 import GenerateImage from '@/assets/Functions/GenerateImage.vue'
 import Logout from '@/components/icons/SideNav/Logout.vue'
 
+import useUserStore from '@/stores/UserStore'
+import { storeToRefs } from 'pinia'
+import { clearTokenCookies } from '@/helpers/getTokens'
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
+
+const logout = () => {
+  userStore.user = {
+    email: null,
+    firstName: null,
+    lastName: null,
+    id: null,
+    profile_picture: null,
+    user_role: null
+  }
+  clearTokenCookies()
+}
 const { isOpen } = useSidebar()
 
 const selectedButton = ref(-1)
@@ -20,7 +38,7 @@ const selectedButton = ref(-1)
 
 <template>
   <header
-    class="flex items-center justify-between px-6 py-2 bg-gray-100 border-b-4 border-indigo-600"
+    class="flex items-center justify-between px-6 py-1 bg-stone-100 border-b-4 border-green-700"
   >
     <div class="flex items-center">
       <!-- hamburger menu -->
@@ -29,19 +47,7 @@ const selectedButton = ref(-1)
       </button>
       <!-- search -->
       <div class="max-w-full mx-4">
-        <div
-          class="relative flex items-center w-full h-12 border-[1px] border-gray-400 rounded-lg focus:border-indigo-600 focus-within:shadow-lg bg-white overflow-hidden"
-        >
-          <div class="grid place-items-center h-full w-12 text-gray-300">
-            <searchIcon />
-          </div>
-
-          <input
-            class="max-w-96 outline-none text-sm text-gray-700 pr-2"
-            type="text"
-            placeholder="Search DeviseHR"
-          />
-        </div>
+        <SearchComp />
       </div>
     </div>
 
@@ -49,13 +55,15 @@ const selectedButton = ref(-1)
       <div class="flex items-center justify-end gap-2">
         <!-- create new -->
         <div class="relative">
-          <button
-            class="flex p-1 text-gray-600 border-[1px] border-black rounded-md focus:outline-none"
-            @click="selectedButton = 0"
-          >
-            <PlusIcon />
-            <ArrowIcon />
-          </button>
+          <el-tooltip content="Create new" placement="bottom" effect="dark">
+            <button
+              class="flex p-1 text-gray-600 border-[1px] border-black rounded-md focus:outline-none"
+              @click="selectedButton = 0"
+            >
+              <PlusIcon />
+              <ArrowIcon />
+            </button>
+          </el-tooltip>
 
           <div
             v-show="selectedButton === 0"
@@ -70,7 +78,7 @@ const selectedButton = ref(-1)
           >
             <RouterLink to="/CreateOperator" class="flex items-center justify-center text-gray-600">
               <div
-                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600"
+                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-green-700"
               >
                 <operator />
                 <span class="mx-2 text-xs font-semibold flex flex-row justify-between">
@@ -81,7 +89,7 @@ const selectedButton = ref(-1)
 
             <RouterLink to="/CreateCompany" class="flex items-center justify-center text-gray-600">
               <div
-                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600"
+                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-green-600"
               >
                 <company />
                 <span class="mx-2 text-xs font-semibold flex flex-row justify-between">
@@ -95,7 +103,7 @@ const selectedButton = ref(-1)
               class="flex items-center justify-center text-gray-600 hover:text-white"
             >
               <div
-                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-indigo-600"
+                class="flex flex-row p-2 hover:border-2 hover:rounded-md hover:text-white hover:bg-green-600"
               >
                 <NoteIcon />
                 <span class="mx-5 text-xs font-semibold flex flex-row justify-between">
@@ -187,20 +195,29 @@ const selectedButton = ref(-1)
       </div>
       <!-- Avatar -->
       <div class="relative py-2 px-4">
-        <button
-          @click="selectedButton = 1"
-          class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none"
-        >
-          <div :class="user?.profile_picture === null">
-            <GenerateImage :firstName="user?.first_name" :lastName="user?.last_name" />
-          </div>
-          <img
-            class="object-cover w-full h-full"
-            :class="user?.profile_picture === null ? 'hidden' : 'block'"
-            :src="user?.profile_picture"
-            alt="Your avatar"
-          />
-        </button>
+        <ElTooltip content="Profile" placement="bottom" effect="dark">
+          <button
+            @click="selectedButton = 1"
+            class="relative z-10 block overflow-hidden rounded-full shadow focus:outline-none"
+          >
+            <div
+              :class="user?.profile_picture === null"
+              class="object-cover w-full h-full border-4 border-solid border-[#fefefd] rounded-[50%] cursor-pointer transition-[0.3s] hover:scale-[1.002] hover:brightness-90"
+            >
+              <GenerateImage
+                class="flex items-center justify-center"
+                :firstName="user?.firstName!"
+                :lastName="user?.lastName!"
+              />
+            </div>
+            <img
+              class="object-cover w-full h-full"
+              :class="user?.profile_picture === null ? 'hidden' : 'block'"
+              :src="user?.profile_picture!"
+              alt="Your avatar"
+            />
+          </button>
+        </ElTooltip>
         <div
           v-show="selectedButton === 1"
           @click="selectedButton = -1"
@@ -219,12 +236,12 @@ const selectedButton = ref(-1)
             v-show="selectedButton === 1"
             class="absolute right-0 z-20 w-48 py-1 mt-2 bg-white rounded-lg shadow-xl"
           >
-            <a
-              href="#"
-              class="px-4 py-2 flex rounded-md text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+            <RouterLink
+              to="/Profile"
+              class="px-4 py-2 flex rounded-md text-sm text-gray-700 hover:bg-green-600 hover:text-white"
             >
               <ProfileIcon />
-              Profile</a
+              Profile</RouterLink
             >
             <!-- <RouterLink
               to="/Settings"
@@ -233,20 +250,16 @@ const selectedButton = ref(-1)
               <settings />
               Settings</RouterLink
             > -->
-            <router-link
-              to="/"
-              class="flex px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+            <a
+              href="/login"
+              class="flex px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-green-600 hover:text-white"
+              @click="logout"
             >
               <Logout />
-              Log out</router-link
-            >
+              Log out
+            </a>
           </div>
         </transition>
-      </div>
-      <div class="">
-        <h1 class="text-2xl font-bold text-gray-700">
-          {{ user?.first_name }} {{ user?.last_name }}
-        </h1>
       </div>
     </div>
   </header>
