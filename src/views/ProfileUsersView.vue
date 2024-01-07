@@ -174,35 +174,66 @@ const selectedTab = ref(0)
 
         <!-- Notes -->
         <div v-show="selectedTab === 1" class="flex flex-wrap px-16 gap-4">
-          <div class="bg-gray-100 p-10 rounded-md">
+          <div class="bg-gray-50 p-10 rounded-md">
             <ul class="">
+              <!-- Edit Company Main Content -->
               <li class="mb-6">
-                <div class="flex items-center justify-between">
-                  <div class="mr-6">
-                    <img
-                      class="Media__image"
-                      id="google-drive"
-                      src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Logo_of_Google_Drive.png"
-                      alt=""
-                    />
-                  </div>
+                <div class="flex items-center justify-between gap-4">
                   <div class="Media__body">
                     <div>
-                      <h3 class="text-black text-lg font-semibold">Google Drive</h3>
-                      <p class="text-gray-600">
-                        Configure to sync design and code files from Google Drive
-                      </p>
+                      <h3 class="text-black text-lg font-semibold">Edit User email</h3>
+                      <small class="text-gray-600">
+                        When replacing the User email, make sure to edit the correct email.
+                      </small>
                     </div>
                   </div>
-                  <div class="Media__side Media__side--right">
-                    <input class="checkbox-input" id="DetailsOptionCheckbox1" type="checkbox" />
-                    <label
-                      class="checkbox ion-ios-checkmark-empty"
-                      for="DetailsOptionCheckbox1"
-                    ></label>
+                  <div class="group mt-8">
+                    <input type="email" class="bg-gray-50 input" required />
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Email</label>
                   </div>
                 </div>
               </li>
+              <li class="mb-6">
+                <div class="flex items-center justify-between gap-4">
+                  <div class="Media__body">
+                    <div>
+                      <h3 class="text-black text-lg font-semibold">Reset User Password</h3>
+                      <small class="text-gray-600">
+                        When resetting the User password, make sure to edit the correct password.
+                      </small>
+                    </div>
+                  </div>
+
+                  <div class="mt-8 inline-flex items-center">
+                    <input
+                      class="relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 checked:border-green-500 checked:bg-green-500 checked:before:bg-green-500 hover:before:opacity-10"
+                      type="checkbox"
+                      checked
+                    />
+                    <span
+                      class="absolute text-white transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-3.5 w-3.5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="1"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </li>
+
               <!-- Other list items omitted for brevity -->
             </ul>
           </div>
@@ -212,4 +243,126 @@ const selectedTab = ref(0)
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.group {
+  position: relative;
+  margin-bottom: 45px;
+}
+.input {
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 300px;
+  border: none;
+  border-bottom: 1px solid #757575;
+}
+.input:focus {
+  outline: none;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* LABEL ======================================= */
+label {
+  color: #999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+.input:focus ~ label,
+.input:valid ~ label {
+  top: -20px;
+  font-size: 14px;
+  color: #5264ae;
+}
+
+/* BOTTOM BARS ================================= */
+.bar {
+  position: relative;
+  display: block;
+  width: 300px;
+}
+.bar:before,
+.bar:after {
+  content: '';
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #5264ae;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+.bar:before {
+  left: 50%;
+}
+.bar:after {
+  right: 50%;
+}
+
+/* active state */
+.input:focus ~ .bar:before,
+.input:focus ~ .bar:after {
+  width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+  position: absolute;
+  height: 60%;
+  width: 100px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* active state */
+.input:focus ~ .highlight {
+  -webkit-animation: inputHighlighter 0.3s ease;
+  -moz-animation: inputHighlighter 0.3s ease;
+  animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+  from {
+    background: #5264ae;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+@-moz-keyframes inputHighlighter {
+  from {
+    background: #5264ae;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+@keyframes inputHighlighter {
+  from {
+    background: #5264ae;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
+</style>
