@@ -18,35 +18,39 @@ const { currentRoute } = useRouter()
 const userStore = useUserStore()
 
 onMounted(async () => {
-  const [token, refreshToken] = getTokensFromCookies()
-  let userDate: TLoginRefreshUserResponse = await refreshRequest(token, refreshToken)
+  if (window.location.pathname !== '/registration') {
+    console.log('hi3')
 
-  if (userDate.success === true) {
-    addTokensToCookies(userDate.token, userDate.refreshToken)
+    const [token, refreshToken] = getTokensFromCookies()
+    let userDate: TLoginRefreshUserResponse = await refreshRequest(token, refreshToken)
 
-    setInterval(
-      async () => {
-        const [token, refreshToken] = getTokensFromCookies()
-        userDate = await refreshRequest(token, refreshToken)
+    if (userDate.success === true) {
+      addTokensToCookies(userDate.token, userDate.refreshToken)
 
-        if (userDate.success) {
-          userStore.user.id = userDate.data.id
-          userStore.user.user_role = userDate.data.user_role
-          addTokensToCookies(userDate.token, userDate.refreshToken)
-        }
-      },
-      1000 * 60 * 14
-    )
+      setInterval(
+        async () => {
+          const [token, refreshToken] = getTokensFromCookies()
+          userDate = await refreshRequest(token, refreshToken)
 
-    userStore.user.email = userDate.data.email
-    userStore.user.firstName = userDate.data.first_name
-    userStore.user.lastName = userDate.data.last_name
-    userStore.user.id = userDate.data.id
-    userStore.user.user_role = userDate.data.user_role
-    userStore.user.profile_picture = userDate.data.profile_picture
-  } else {
-    clearTokenCookies()
-    router.push('/login')
+          if (userDate.success) {
+            userStore.user.id = userDate.data.id
+            userStore.user.user_role = userDate.data.user_role
+            addTokensToCookies(userDate.token, userDate.refreshToken)
+          }
+        },
+        1000 * 60 * 14
+      )
+
+      userStore.user.email = userDate.data.email
+      userStore.user.firstName = userDate.data.first_name
+      userStore.user.lastName = userDate.data.last_name
+      userStore.user.id = userDate.data.id
+      userStore.user.user_role = userDate.data.user_role
+      userStore.user.profile_picture = userDate.data.profile_picture
+    } else {
+      clearTokenCookies()
+      router.push('/login')
+    }
   }
 })
 
