@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { loginRequest } from '@/Connection/AuthRequests'
+import { loginRequest, refreshRequest } from '@/Connection/AuthRequests'
 import type { TLoginRefreshUserResponse } from '@/Types/LoginAndRefreshResponse'
 import { addTokensToCookies } from '@/helpers/getTokens'
+import useUserStore from '@/stores/UserStore'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const showAlert = ref(false)
 const alertMessage = ref('')
 const router = useRouter()
+const userStore = useUserStore()
 
 const email = ref('sudo@devisehr.com')
 const password = ref('password123')
+const showPassword = ref(false)
 
 const login = async () => {
   const data: TLoginRefreshUserResponse = await loginRequest(email.value, password.value)
@@ -19,6 +22,15 @@ const login = async () => {
 
   if (data.success) {
     addTokensToCookies(data.token, data.refreshToken)
+    let userDate: TLoginRefreshUserResponse = await refreshRequest(data.token, data.refreshToken)
+
+    userStore.user.email = userDate.data.email
+    userStore.user.firstName = userDate.data.first_name
+    userStore.user.lastName = userDate.data.last_name
+    userStore.user.id = userDate.data.id
+    userStore.user.user_role = userDate.data.user_role
+    userStore.user.profile_picture = userDate.data.profile_picture
+
     router.push('/Home')
   } else {
     showAlert.value = true
@@ -56,8 +68,33 @@ const login = async () => {
 
         <label class="block mt-3">
           <span class="text-sm text-gray-700">Password</span>
+          <!-- <button class="absolute right-0" @click="showPassword = !showPassword">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              />
+            </svg>
+            <span class="sr-only">Show password</span>
+            <span class="sr-only">Hide password</span>
+          </button> -->
           <input
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
+            placeholder="Password"
             class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
             v-model="password"
           />

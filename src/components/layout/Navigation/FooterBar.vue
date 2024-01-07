@@ -1,5 +1,5 @@
 <template>
-  <div class="text-sm p-4 w-full border-t-2 px-8 py-3 lg:flex justify-between items-center">
+  <div class="text-sm p-4 w-full border-t-1 px-8 py-3 lg:flex justify-between items-center">
     <small class="mb-2 lg:mb-0">© {{ currentYear }} DeviseHR. All rights reserved.</small>
 
     <div class="flex">
