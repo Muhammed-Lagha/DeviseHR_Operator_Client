@@ -6,9 +6,9 @@
 <script lang="ts" setup>
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { refreshRequest } from './Connection/AuthRequests'
-import type { TLoginRefreshUserResponse } from './Types/LoginAndRefreshResponse'
-import { addTokensToCookies, clearTokenCookies, getTokensFromCookies } from './helpers/getTokens'
+import { refreshRequest } from '@/Api/AuthRequestsApi'
+import type { TLoginRefreshUserResponse } from '@/Types/LoginAndRefreshResponse'
+import { addTokensToCookies, clearTokenCookies, getTokensFromCookies } from '@/utils/getTokens'
 import useUserStore from './stores/UserStore'
 import router from './router'
 
