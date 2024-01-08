@@ -1,5 +1,4 @@
-import { opApiConnection } from '@/Connection/ConnectionStrings'
-import { getTokensFromCookies } from '@/helpers/getTokens'
+import { opApiConnection } from '@/utils/ConnectionStrings'
 import axios from 'axios'
 
 export const loginRequest = async (email: string, password: string) => {

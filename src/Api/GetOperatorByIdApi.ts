@@ -1,7 +1,7 @@
 import axios from "axios";
-import { opApiConnection, token } from '@/Connection/ConnectionStrings';
+import { opApiConnection } from '@/utils/ConnectionStrings';
 
-export const getOperatorById = async (opId: number) => {
+const getOperatorById = async (token: string ,opId: number) => {
     const response = await axios.get(
         `${opApiConnection}/api/admin-operators/operators/${opId}`,
         {
@@ -12,3 +12,5 @@ export const getOperatorById = async (opId: number) => {
         },);
     return response.data.data
 }
+
+export default getOperatorById
