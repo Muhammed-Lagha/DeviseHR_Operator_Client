@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { loginRequest, refreshRequest } from '@/Connection/AuthRequests'
-import type { TLoginRefreshUserResponse } from '@/Types/LoginAndRefreshResponse'
-import { addTokensToCookies } from '@/helpers/getTokens'
-import useUserStore from '@/stores/UserStore'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import type { TLoginRefreshUserResponse } from '@/Types/LoginAndRefreshResponse'
+import { loginRequest, refreshRequest } from '@/Api/AuthRequestsApi'
+import { addTokensToCookies } from '@/utils/getTokens'
+import useUserStore from '@/stores/UserStore'
 
+const loginError = ref(false)
 const showAlert = ref(false)
 const alertMessage = ref('')
 const router = useRouter()
@@ -37,6 +38,7 @@ const login = async () => {
     alertMessage.value = 'Invalid email or password'
   }
 }
+const inputError = ref('border-red-500 focus:border-red-500 focus:ring-red-500')
 </script>
 
 <template>
@@ -52,7 +54,7 @@ const login = async () => {
     <div class="w-full max-w-sm p-6 bg-white rounded-md shadow-md">
       <div class="flex items-center justify-center">
         <span class="text-2xl font-semibold text-gray-700"
-          >Devise<span class="text-indigo-400">HR</span></span
+          >Devise<span class="text-green-400">HR</span></span
         >
       </div>
 
@@ -61,41 +63,17 @@ const login = async () => {
           <span class="text-sm text-gray-700">Email</span>
           <input
             type="email"
-            class="block w-full mt-1 border-gray-200 rounded-md email"
+            class="block w-full mt-1 border-gray-200 rounded-md input"
             v-model="email"
           />
         </label>
 
         <label class="block mt-3">
           <span class="text-sm text-gray-700">Password</span>
-          <!-- <button class="absolute right-0" @click="showPassword = !showPassword">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
-            </svg>
-            <span class="sr-only">Show password</span>
-            <span class="sr-only">Hide password</span>
-          </button> -->
           <input
             :type="showPassword ? 'text' : 'password'"
             placeholder="Password"
-            class="block w-full mt-1 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+            class="block w-full mt-1 border-gray-200 rounded-md input"
             v-model="password"
           />
         </label>
@@ -136,16 +114,31 @@ el-alert {
   margin: 0;
 }
 
-.email {
+.input {
   border: solid #bbb 1px;
   padding: 0.2rem 0.3rem;
-  transition: all 0.3s ease;
 }
 
-.email:focus {
+.input:focus {
+  outline: none;
+  border: solid #4f46e5 2px;
+  --tw-ring-color: rgb(99 102 241);
+  transition: all 0.1s ease;
+}
+/* .inputError{
+  border: solid red 1px;
+  padding: 0.2rem 0.3rem;
+}
+
+.inputError:focus {
   outline: none;
   border: solid red 1px;
-  color: peru;
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
+} */
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
