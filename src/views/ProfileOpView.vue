@@ -2,21 +2,18 @@
 import Breadcrumb from '@/partials/Breadcrumb.vue'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
-import axios from 'axios'
-import { opApiConnection } from '@/Connection/ConnectionStrings'
+import getOperatorById from '@/Api/GetOperatorByIdApi'
+import { getAuthToken } from '@/utils/getTokens'
+import { useRouter } from 'vue-router'
 
 const user = ref()
 
 onMounted(async () => {
-  const userResponse = await axios.get(`${opApiConnection}/api/operators/me`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
-  })
-  user.value = userResponse.data.data
+  const router = useRouter()
+  const opId = router.currentRoute.value.query.id
+  const token = getAuthToken()
+  if (token) user.value = await getOperatorById(token, Number(opId))
 })
-// update
 
 // style ref
 const activeClass = ref('bg-opacity-25 text-black border-b-2 border-blue-500')

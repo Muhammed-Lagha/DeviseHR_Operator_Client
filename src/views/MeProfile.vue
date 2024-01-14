@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import useUserStore from '@/stores/UserStore'
 import { storeToRefs } from 'pinia'
 import GenerateImage from '@/assets/Functions/GenerateImage.vue'
@@ -10,37 +9,12 @@ const { user } = storeToRefs(userStore)
 </script>
 
 <template>
-  <Breadcrumb breadcrumb="Profile" />
+  <Breadcrumb :breadcrumb="user?.firstName! + ' ' + user?.lastName" />
   <!--Banner-->
   <main class="text-[#0f1419] bg-[#fefefd] rounded-md">
     <div class="max-w-6xl -my-2 mx-auto border border-solid">
       <main class="border-b border-solid border-black border-opacity-[0.1]">
-        <!-- Profile Details Section Image and Name -->
         <div class="flex flex-col">
-          <!-- <section class="flex items-center flex-col py-6">
-            <div class="max-w-[15%] max-f-[15%] top-[68%] left-[2%]">
-              <div>
-                <GenerateImage
-                  class="w-full h-full border-4 border-solid border-[#fefefd] rounded-[50%] cursor-pointer transition-[0.3s] hover:scale-[1.002] hover:brightness-90"
-                  :class="user.profile_picture === null ? 'block' : 'hidden'"
-                  :firstName="user?.firstName!"
-                  :lastName="user?.lastName!"
-                />
-              </div>
-              <img
-                class="w-full h-full border-4 border-solid border-[#fefefd] rounded-[50%] cursor-pointer transition-[0.3s] hover:scale-[1.002] hover:brightness-90"
-                :class="user.profile_picture === null ? 'hidden' : 'block'"
-                :src="user?.profile_picture!"
-                alt="Your avatar"
-              />
-            </div>
-            <div class="pt-2">
-              <h1 class="font-extrabold text-xl whitespace-nowrap text-[#0f1419]">
-                {{ user?.firstName }} {{ user?.lastName }}
-              </h1>
-            </div>
-          </section> -->
-          <!-- Profile Details Section Tabs -->
           <section class="py-2 px-8">
             <div class="mt-4 bg-white shadow-sm rounded-lg">
               <div class="fancy-p">

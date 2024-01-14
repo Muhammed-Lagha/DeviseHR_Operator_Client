@@ -3,410 +3,298 @@ import RenderUser from '@/components/layout/Tables/RenderUsers.vue'
 import Breadcrumb from '@/partials/Breadcrumb.vue'
 import GenerateImage from '@/assets/Functions/GenerateImage.vue'
 import { ref } from 'vue'
+import type { Company } from '@/Types/Company'
+import { onMounted } from 'vue'
+import { getCompanyById } from '@/Api/GetCompanyByIdApi'
+import { getAuthToken } from '@/utils/getTokens'
+import { useRouter } from 'vue-router'
 
-// import { onMounted } from 'vue'
-// import axios from 'axios'
-// import { opApiConnection } from '@/Connection/ConnectionStrings'
+const router = useRouter()
+const companyId = router.currentRoute._value.params.id
+//const Companies = ref<Company[]>([])
+const company = ref<Company>()
 
-//const company = ref()
-
-// onMounted(async () => {
-//   const userResponse = await axios.get(`${opApiConnection}/api/company/get-company/1`, {
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: `Bearer ${localStorage.getItem('token')}`
-//     }
-//   })
-//   company.value = userResponse.data.data
-// })
-// update
-
-interface Company {
-  id: number
-  account_number: string
-  logo?: string
-  main_contact_id?: number
-  max_employees_allowed: number
-  phone_number?: string
-  send_registration?: boolean
-  email?: string
-  name: string
-  country: string
-  main_contact_name?: string
-  created_at: string
-  updated_at: string
-}
-
-const company: Company = {
-  id: 1,
-  name: 'DeviseHR',
-  country: 'Libya',
-  account_number: '123456',
-  email: 'devisehr@devisehr.com',
-  max_employees_allowed: 100,
-  phone_number: '123456789',
-  send_registration: false,
-  main_contact_id: 1,
-  logo: null,
-  created_at: '2022-01-01',
-  updated_at: '2022-01-01'
-}
+onMounted(async () => {
+  console.log(companyId)
+  const token = getAuthToken()
+  if (token) company.value = await getCompanyById(token, Number(companyId))
+  console.log(company.value)
+})
 
 // style ref
-const activeClass = ref('bg-opacity-25 text-black border-b-2 border-blue-500')
-const inactiveClass = ref(
-  'border-blue-900 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100'
-)
+// const activeClass = ref('bg-opacity-25 text-black border-b-2 border-blue-500')
+// const inactiveClass = ref(
+//   'border-blue-900 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100'
+// )
 
-const selectedTab = ref(0)
+// const selectedTab = ref(0)
 
-const update = ref(false)
+// const update = ref(false)
 </script>
 
 <template>
-  <!--Breadcrumb-->
-  <Breadcrumb breadcrumb="Profile" />
-  <!--Banner-->
-  <main class="text-[#0f1419] bg-[#fefefd] rounded-md">
-    <div class="max-w-6xl -my-2 mx-auto border border-solid">
-      <header class="py-0 border-b border-solid">
-        <!-- Header -->
-        <div>
-          <ul class="flex list-none">
-            <li
-              @click="selectedTab = 0"
-              :class="[selectedTab === 0 ? activeClass : inactiveClass]"
-              class="flex-1 text-center cursor-pointer"
-              tabindex="0"
-            >
-              <div class="no-underline w-full whitespace-nowrap text-[#536471] font-bold px-4 py-0">
-                <p class="py-4 px-0 relative duration-[0.2s]">Company Details</p>
-              </div>
-            </li>
-            <li
-              @click="selectedTab = 1"
-              :class="[selectedTab === 1 ? activeClass : inactiveClass]"
-              class="flex-1 text-center cursor-pointer"
-              tabindex="0"
-            >
-              <div class="no-underline w-full whitespace-nowrap text-[#536471] font-bold px-4 py-0">
-                <p class="py-4 px-0 relative duration-[0.2s]">Settings</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </header>
-      <main class="border-b border-solid border-black border-opacity-[0.1]">
-        <!-- Profile Details Section Image and Name -->
-        <div v-show="selectedTab === 0" class="flex flex-col">
-          <section class="flex items-center flex-col py-6">
-            <div class="max-w-[15%] max-f-[15%] top-[68%] left-[2%]">
-              <div :class="company?.logo === null ? 'block' : 'hidden'">
-                <GenerateImage
-                  class="w-full h-full border-4 border-solid border-[#fefefd] rounded-[50%] cursor-pointer transition-[0.3s] hover:scale-[1.002] hover:brightness-90"
-                  :firstName="company?.name"
-                  :lastName="company?.country"
-                />
-              </div>
-              <img
-                class="w-full h-full border-4 border-solid border-[#fefefd] rounded-[50%] cursor-pointer transition-[0.3s] hover:scale-[1.002] hover:brightness-90"
-                :class="company?.logo === null ? 'hidden' : 'block'"
-                :src="company?.logo"
-                alt="Your avatar"
-              />
-            </div>
-            <div class="pt-2">
-              <h1 class="font-extrabold text-xl whitespace-nowrap text-[#0f1419]">
-                {{ company?.name }}
-              </h1>
-            </div>
-          </section>
-          <!-- Profile Details Section Tabs -->
-          <section class="py-6 px-8">
-            <div class="mt-4 bg-white shadow-sm rounded-lg">
-              <div class="fancy-p">
-                <div class="flex justify-between px-4 items-center mb-4">
-                  <p class="font-bold text-lg text-gray-900">Company Details</p>
-                  <div>
-                    <a
-                      type="button"
-                      class="text-gray-900 bg-white hover:bg-gray-50 border border-gray-900 focus:ring-2 focus:outline-none focus:ring-indigo-500 font-medium rounded-lg text-sm px-5 p-2 text-center inline-flex items-center"
-                      @click="update = !update"
-                      ><!----><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="w-6 h-5 mr-2 -ml-1"
-                      >
-                        <path
-                          d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z"
-                        ></path>
-                        <path
-                          d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z"
-                        ></path></svg
-                      ><span class="ltr:ml-2 rtl:mr-2">Modify Company Data</span></a
-                    >
+  <div>
+    <Breadcrumb :breadcrumb="company?.name!" />
+    <main class="text-[#0f1419] bg-[#fefefd] rounded-md">
+      <div class="max-w-6xl -my-2 mx-auto border border-solid">
+        <div class="border-b border-solid border-black border-opacity-[0.1]">
+          <div class="flex flex-col">
+            <section class="py-2 px-8">
+              <div class="mt-4 bg-white shadow-sm rounded-lg">
+                <div class="fancy-p">
+                  <div class="flex justify-between px-4 items-center mb-4">
+                    <div class="font-bold text-lg">Basic Info</div>
+                    <div class="max-w-[15%] max-f-[15%] top-[68%] left-[2%]">
+                      <div>
+                        <GenerateImage
+                          class="w-full h-full border-4 border-solid border-[#fefefd] rounded-[50%] cursor-pointer transition-[0.3s] hover:scale-[1.002] hover:brightness-90"
+                          :firstName="company?.name!"
+                          :lastName="company?.name!"
+                        />
+                      </div>
+                    </div>
+                    <div class=""></div>
                   </div>
-                </div>
-
-                <div v-if="update" class="fancy-p">
-                  <p class="card-header">Edit Super Root Details</p>
-                  <form class="form">
-                    <div class="grid grid-cols-2 gap-8">
-                      <div>
-                        <label class="block font-medium text-sm" for="name"
-                          ><span>Full Name</span></label
-                        ><input
-                          class="border-3 border-gray-900 focus:border-purple-500 focus:ring-purple-500 rounded-md shadow-sm mt-1 block w-full"
-                          placeholder="{{ company?.name }}"
-                          id="name"
-                          type="text"
-                          required
-                          autofocus=""
-                          autocomplete="name"
-                        />
-                        <div class="mt-2" style="display: none">
-                          <p class="text-sm text-red-600 dark:text-red-500"></p>
+                  <div class="overflow-hidden sm:rounded-lg py-4">
+                    <dl>
+                      <div class="grid grid-cols-2">
+                        <div class="px-4 py-3.5 col-span-1 bg-gray-100">
+                          <dt class="text-sm font-medium text-gray-500">Name</dt>
+                          <dd class="mt-1 text-sm text-gray-900">
+                            {{ company?.name }}
+                          </dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1 bg-gray-100">
+                          <dt class="text-sm font-medium text-gray-500">Id</dt>
+                          <dd class="mt-1 text-sm text-gray-900">{{ company?.id }}</dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1">
+                          <dt class="text-sm font-medium text-gray-500">Email</dt>
+                          <dd class="mt-1 text-sm text-gray-900">{{ company?.email }}</dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1">
+                          <dt class="text-sm font-medium text-gray-500">Account Number</dt>
+                          <dd class="mt-1 text-sm text-gray-900">{{ company?.account_number }}</dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1 bg-gray-100">
+                          <dt class="text-sm font-medium text-gray-500">Added By Operator</dt>
+                          <dd class="mt-1 text-sm text-gray-900">
+                            {{ company?.added_by_operator }}
+                          </dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1 bg-gray-100">
+                          <dt class="text-sm font-medium text-gray-500">Phone Number</dt>
+                          <dd class="mt-1 text-sm text-gray-900">{{ company?.phone_number }}</dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1">
+                          <dt class="text-sm font-medium text-gray-500">Main Contact Name</dt>
+                          <dd
+                            class="mt-1 text-sm text-gray-900"
+                            v-for="user in company?.users"
+                            :key="user.id"
+                          >
+                            {{
+                              company?.main_contact_id == user.id
+                                ? user.first_name + ' ' + user.last_name
+                                : ''
+                            }}
+                          </dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1">
+                          <dt class="text-sm font-medium text-gray-500">Main Contact Id</dt>
+                          <dd class="mt-1 text-sm text-gray-900">{{ company?.main_contact_id }}</dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1 bg-gray-100">
+                          <dt class="text-sm font-medium text-gray-500">Licence Number</dt>
+                          <dd class="mt-1 text-sm text-gray-900">
+                            {{ company?.licence_number }}
+                          </dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1 bg-gray-100">
+                          <dt class="text-sm font-medium text-gray-500">Expiration Date</dt>
+                          <dd class="mt-1 text-sm text-gray-900">
+                            {{ company?.expiration_date }}
+                          </dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1">
+                          <dt class="text-sm font-medium text-gray-500">Created At</dt>
+                          <dd class="mt-1 text-sm text-gray-900">{{ company?.created_at }}</dd>
+                        </div>
+                        <div class="px-4 py-3.5 col-span-1">
+                          <dt class="text-sm font-medium text-gray-500">Updated At</dt>
+                          <dd class="mt-1 text-sm text-gray-900">{{ company?.updated_at }}</dd>
                         </div>
                       </div>
-                      <div>
-                        <label class="block font-medium text-sm" for="national_id"
-                          ><span>Email</span></label
-                        ><input
-                          class="border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-md shadow-sm mt-1 block w-full"
-                          placeholder="{{ company?.email }}"
-                          id="national_id"
-                          type="number"
-                          required
-                          pattern="[0-9]{14}"
-                          autocomplete="off"
-                        />
-                        <div class="mt-2" style="display: none">
-                          <p class="text-sm text-red-600 dark:text-red-500"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-8 mt-4">
-                      <div>
-                        <label class="block font-medium text-sm" for="phone"
-                          ><span>Phone</span></label
-                        ><input
-                          class="border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-md shadow-sm mt-1 block w-full"
-                          placeholder="{{ company?.phone }}"
-                          id="phone"
-                          type="text"
-                          required
-                          autocomplete="off"
-                        />
-                        <div class="mt-2" style="display: none">
-                          <p class="text-sm text-red-600 dark:text-red-500"></p>
-                        </div>
-                      </div>
-                      <div>
-                        <label class="block font-medium text-sm" for="email"
-                          ><span>Main Contact</span></label
-                        ><input
-                          class="border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-md shadow-sm mt-1 block w-full"
-                          placeholder=""
-                          id="email"
-                          type="email"
-                          required
-                          autocomplete="off"
-                        />
-                        <div class="mt-2" style="display: none">
-                          <p class="text-sm text-red-600 dark:text-red-500"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-8 mt-4">
-                      <div>
-                        <label class="block font-medium text-sm" for="phone"
-                          ><span>Country</span></label
-                        ><input
-                          class="border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-md shadow-sm mt-1 block w-full"
-                          placeholder="{{ company?.country }}"
-                          id="phone"
-                          type="text"
-                          required
-                          autocomplete="off"
-                        />
-                        <div class="mt-2" style="display: none">
-                          <p class="text-sm text-red-600 dark:text-red-500"></p>
-                        </div>
-                      </div>
-                      <div>
-                        <label class="block font-medium text-sm" for="email"
-                          ><span>Expiration Date</span></label
-                        ><input
-                          class="border-gray-300 focus:border-purple-500 focus:ring-purple-500 rounded-md shadow-sm mt-1 block w-full"
-                          placeholder="{{ company?.expiration_date }}"
-                          id="email"
-                          type="email"
-                          required
-                          autocomplete="off"
-                        />
-                        <div class="mt-2" style="display: none">
-                          <p class="text-sm text-red-600 dark:text-red-500"></p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="flex items-center justify-end mt-4">
-                      <form class="inline">
-                        <button
-                          class="inline-flex items-center px-4 py-2 bg-purple-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150 hover:bg-red-700 ml-4"
-                        >
-                          Delete Employee
-                        </button>
-                      </form>
-                      <button
-                        class="inline-flex items-center px-4 py-2 bg-purple-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-600 active:bg-purple-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition ease-in-out duration-150 ltr:ml-4 rtl:mr-4"
-                      >
-                        Edit Employee
-                      </button>
-                    </div>
-                  </form>
-                </div>
-
-                <div v-else class="overflow-hidden sm:rounded-lg py-4">
-                  <dl>
-                    <div class="grid grid-cols-2">
-                      <div class="px-4 py-3.5 col-span-1 bg-gray-100">
-                        <dt class="text-sm font-medium text-gray-500">Name</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ company?.name }}</dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1 bg-gray-100">
-                        <dt class="text-sm font-medium text-gray-500">Email</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ company?.email }}</dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Phone</dt>
-                        <dd class="mt-1 text-sm text-gray-900">1000-100-5000</dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Main Content</dt>
-                        <dd class="mt-1 text-sm text-gray-900">Muhammed Lagha</dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1 bg-gray-100">
-                        <dt class="text-sm font-medium text-gray-500">country</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ company?.country }}</dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1 bg-gray-100">
-                        <dt class="text-sm font-medium text-gray-500">Expiration Date</dt>
-                        <dd class="mt-1 text-sm text-gray-900">12/12/2022</dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1">
-                        <dt class="text-sm font-medium text-gray-500"></dt>
-                        <dd class="mt-1 text-sm text-gray-900"></dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1">
-                        <dt class="text-sm font-medium text-gray-500"></dt>
-                        <dd class="mt-1 text-sm text-gray-900"></dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1 bg-gray-100">
-                        <dt class="text-sm font-medium text-gray-500"></dt>
-                        <dd class="mt-1 text-sm text-gray-900"></dd>
-                      </div>
-                      <div class="px-4 py-3.5 col-span-1 bg-gray-100">
-                        <dt class="text-sm font-medium text-gray-500"></dt>
-                        <dd class="mt-1 text-sm text-gray-900"></dd>
-                      </div>
-                    </div>
-                  </dl>
+                    </dl>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </div>
-        <!-- Notes Section -->
-        <div v-show="selectedTab === 1" class="py-6 px-8">
-          <header class="Details__header p-6">
-            <h1 class="text-black text-2xl tracking-wide text-center uppercase">
-              Company Settings
-            </h1>
-          </header>
-        </div>
-      </main>
-      <footer class="p-4">
-        <!-- Profile Details -->
-        <div v-show="selectedTab === 0" class="flex flex-wrap items-center justify-center gap-4">
-          <RenderUser />
-        </div>
-        <!-- Settings Section -->
-        <div v-show="selectedTab === 1" class="flex flex-wrap px-16 gap-4">
-          <div class="bg-gray-50 p-10 rounded-md w-full">
-            <ul class="">
-              <!-- Edit Company Main Content -->
-              <li class="mb-6">
-                <div class="flex items-center justify-between gap-4">
-                  <div class="Media__body">
-                    <div>
-                      <h3 class="text-black text-lg font-semibold">Edit Company Main Content</h3>
-                      <small class="text-gray-600">
-                        When replacing the company main content, make sure to replace the correct
-                        number id.
-                      </small>
-                    </div>
-                  </div>
-                  <div class="group mt-8">
-                    <input type="number" class="bg-gray-50" required />
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Main Content Id</label>
-                  </div>
-                </div>
-              </li>
-              <!-- Edit Company Expiration Date -->
-              <li class="mb-6">
-                <div class="flex items-center justify-between gap-4">
-                  <div class="Media__body">
-                    <div>
-                      <h3 class="text-black text-lg font-semibold">Edit Company Expiration Date</h3>
-                      <small class="text-gray-600">
-                        When Editing the company expiration date, make sure to bik the correct date.
-                      </small>
-                    </div>
-                  </div>
-                  <div class="group mt-8">
-                    <input type="date" class="bg-gray-50" required />
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Expiration Id</label>
-                  </div>
-                </div>
-              </li>
-              <!-- Edit max amount of users in company -->
-              <li class="mb-2">
-                <div class="flex items-center justify-between gap-4">
-                  <div class="Media__body">
-                    <div>
-                      <h3 class="text-black text-lg font-semibold">
-                        Edit max amount of users in company
-                      </h3>
-                      <small class="text-gray-600">
-                        When Editing the max amount of users in company, make sure to bik the
-                        correct number.
-                      </small>
-                    </div>
-                  </div>
-                  <div class="group mt-8">
-                    <input type="number" class="bg-gray-50" required />
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Max Amount</label>
-                  </div>
-                </div>
-              </li>
-              <!-- Other list items omitted for brevity -->
-            </ul>
+            </section>
           </div>
         </div>
-      </footer>
-    </div>
-  </main>
+        <!-- <footer class="p-4"></footer> -->
+        <div class="p-4 mt-2">
+          <div class="">
+            <h2 class="ml-5 text-xl font-semibold leading-tight text-gray-700">Users</h2>
+            <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
+              <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
+                <table class="min-w-full leading-normal">
+                  <thead>
+                    <tr>
+                      <th
+                        class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
+                      >
+                        User
+                      </th>
+                      <th
+                        class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
+                      >
+                        Id
+                      </th>
+                      <th
+                        class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
+                      >
+                        Email
+                      </th>
+                      <th
+                        class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
+                      >
+                        Role
+                      </th>
+                      <th
+                        class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
+                      >
+                        Terminated
+                      </th>
+                      <th
+                        class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
+                      >
+                        Verified
+                      </th>
+                      <th
+                        class="px-5 py-3 text-xs font-semibold tracking-wider text-left text-gray-600 uppercase bg-gray-100 border-b-2 border-gray-200"
+                      ></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="user in company?.users" :key="user.id">
+                      <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                        <div class="flex items-center">
+                          <div class="ml-0">
+                            <p
+                              class="text-gray-900 whitespace-nowrap rounded-lg inline-flex text-xs font-semibold leading-5"
+                            >
+                              {{ user.first_name }} {{ user.last_name }}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                        <p
+                          class="text-gray-900 whitespace-nowrap rounded-lg inline-flex text-xs font-semibold leading-5"
+                        >
+                          {{ user.id }}
+                        </p>
+                      </td>
+                      <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                        <p
+                          class="text-gray-900 whitespace-nowrap rounded-lg inline-flex text-xs font-semibold leading-5"
+                        >
+                          {{ user.email }}
+                        </p>
+                      </td>
+                      <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                        <p
+                          class="text-gray-900 whitespace-nowrap rounded-lg inline-flex text-xs font-semibold leading-5"
+                        >
+                          {{ user.user_role }}
+                        </p>
+                      </td>
+                      <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                        <p
+                          class="text-gray-900 whitespace-nowrap rounded-lg p-4 inline-flex text-xs font-semibold leading-5"
+                        >
+                          {{ user.is_terminated === true ? 'Yes' : 'No' }}
+                        </p>
+                      </td>
+                      <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                        <p
+                          class="text-gray-900 whitespace-nowrap rounded-lg p-4 inline-flex text-xs font-semibold leading-5"
+                        >
+                          {{ user.is_verified === true ? 'Yes' : 'No' }}
+                        </p>
+                      </td>
+                      <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                        <div class="flex justify-around">
+                          <span class="text-yellow-500 flex justify-center">
+                            <a href="#" class="mx-2 px-2 rounded-md"
+                              ><svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 text-green-700"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                  clip-rule="evenodd"
+                                />
+                              </svg>
+                            </a>
+                            <form method="POST">
+                              <button class="mx-2 px-2 rounded-md">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="h-5 w-5 text-red-700"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                >
+                                  <path
+                                    fill-rule="evenodd"
+                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                    clip-rule="evenodd"
+                                  />
+                                </svg>
+                              </button>
+                            </form>
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div
+                  class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
+                >
+                  <span class="text-xs text-gray-900 xs:text-sm">Showing 1 to 4 of 50 Entries</span>
+
+                  <div class="inline-flex mt-2 xs:mt-0">
+                    <button
+                      class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-l hover:bg-gray-400"
+                    >
+                      Prev
+                    </button>
+                    <button
+                      class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-r hover:bg-gray-400"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <style scoped>
-.group {
+/* .group {
   position: relative;
   margin-bottom: 45px;
 }
@@ -435,7 +323,7 @@ input[type='date']:focus::-webkit-datetime-edit {
   color: black !important;
 }
 
-/* LABEL ======================================= */
+
 label {
   color: #999;
   font-size: 18px;
@@ -449,7 +337,6 @@ label {
   -webkit-transition: 0.2s ease all;
 }
 
-/* active state */
 input:focus ~ label,
 input:valid ~ label {
   top: -20px;
@@ -457,7 +344,7 @@ input:valid ~ label {
   color: #5264ae;
 }
 
-/* BOTTOM BARS ================================= */
+
 .bar {
   position: relative;
   display: block;
@@ -482,13 +369,12 @@ input:valid ~ label {
   right: 50%;
 }
 
-/* active state */
+
 input:focus ~ .bar:before,
 input:focus ~ .bar:after {
   width: 50%;
 }
 
-/* HIGHLIGHTER ================================== */
 .highlight {
   position: absolute;
   height: 60%;
@@ -499,14 +385,14 @@ input:focus ~ .bar:after {
   opacity: 0.5;
 }
 
-/* active state */
+
 input:focus ~ .highlight {
   -webkit-animation: inputHighlighter 0.3s ease;
   -moz-animation: inputHighlighter 0.3s ease;
   animation: inputHighlighter 0.3s ease;
 }
 
-/* ANIMATIONS ================ */
+
 @-webkit-keyframes inputHighlighter {
   from {
     background: #5264ae;
@@ -533,5 +419,5 @@ input:focus ~ .highlight {
     width: 0;
     background: transparent;
   }
-}
+} */
 </style>
