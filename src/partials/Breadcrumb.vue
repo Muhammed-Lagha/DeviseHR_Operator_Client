@@ -6,9 +6,7 @@
         <RightArrowIcon class="w-3 h-3 mx-3" />
       </li>
       <li :key="breadcrumb" class="flex items-center">
-        <a :href="'/' + breadcrumb" class="text-gray-600">{{
-          breadcrumbName
-        }}</a>
+        <a :href="'/' + breadcrumb" class="text-gray-600">{{ breadcrumbName }}</a>
       </li>
     </ol>
   </nav>
@@ -18,6 +16,6 @@ import RightArrowIcon from '@/components/icons/other/RightArrow.vue'
 import { defineProps, computed } from 'vue'
 const props = defineProps<{ breadcrumb: string }>()
 const breadcrumbName = computed(() => {
-  return props.breadcrumb.toUpperCase()
+  return props.breadcrumb
 })
 </script>

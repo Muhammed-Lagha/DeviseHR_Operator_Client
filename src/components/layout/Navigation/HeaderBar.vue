@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useSidebar } from '@/hooks/useSidebar'
+import { useSidebar } from '@/Hooks/useSidebar'
 import { RouterLink } from 'vue-router'
 import BurgerIcon from '@/components/icons/TopNav/burger menu/BurgerIcon.vue'
 import ArrowIcon from '@/components/icons/TopNav/P&A/ArrowIcon.vue'
@@ -15,7 +15,7 @@ import Logout from '@/components/icons/SideNav/Logout.vue'
 
 import useUserStore from '@/stores/UserStore'
 import { storeToRefs } from 'pinia'
-import { clearTokenCookies } from '@/helpers/getTokens'
+import { clearTokenCookies } from '@/utils/getTokens'
 
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
