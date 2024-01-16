@@ -1,36 +1,61 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-interface Operator {
-  firstName: string
-  lastName: string
-  userRole: string
-  email: string
-  sendRegistration: boolean
+import { ElNotification } from 'element-plus'
+import { createOperatorRequest } from '@/Api/createOperatorApi'
+import { getAuthToken } from '@/utils/getTokens'
+
+const firstName = ref('')
+const lastName = ref('')
+const email = ref('')
+const role = ref('employee ')
+const sendRegistration = ref(false)
+
+const CreateOperator = async () => {
+  const token = getAuthToken()
+  if (token === null) throw new Error('no token')
+
+  await createOperatorRequest(
+    token,
+    firstName.value,
+    lastName.value,
+    role.value,
+    email.value,
+    sendRegistration.value
+  )
+    .then(() => {
+      open1()
+    })
+    .catch(() => {
+      open2()
+    })
 }
 
-const user = ref<Operator>({
-  firstName: '',
-  lastName: '',
-  userRole: '',
-  email: '',
-  sendRegistration: false
-})
+const open1 = () => {
+  ElNotification({
+    title: 'Success',
+    message: 'Operator created successfully',
+    type: 'success'
+  })
+}
 
-const register = () => {
-  const data = JSON.parse(JSON.stringify(user.value))
-  console.log('Registered: ', data)
+const open2 = () => {
+  ElNotification({
+    title: 'Warning',
+    message: 'Operator creation failed',
+    type: 'warning'
+  })
 }
 </script>
 <template>
   <div class="mt-4">
     <div class="w-full max-w-1/3 overflow-hidden bg-white border rounded-md shadow-md">
-      <form @submit.prevent="register">
+      <form @submit.prevent="CreateOperator">
         <div class="flex items-center justify-between px-5 py-3 text-gray-700 border-b">
           <h3 class="text-sm text-gray-600">Create Operator</h3>
         </div>
         <div class="flex flex-wrap">
           <!-- first name -->
-          <div class="px-5 py-6 text-gray-700 bg-gray-200 border-b w-1/2">
+          <div class="px-5 py-6 text-gray-700 bg-gray-50 border-b w-1/2">
             <label class="text-xs">First Name</label>
             <div class="relative mt-2 rounded-md shadow-sm">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
@@ -46,13 +71,13 @@ const register = () => {
 
               <input
                 type="text"
-                v-model="user.firstName"
-                class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                v-model="firstName"
+                class="w-full px-12 py-2 border-transparent rounded-md shadow-md appearance-none input"
               />
             </div>
           </div>
           <!-- Last Name -->
-          <div class="px-5 py-6 text-gray-700 bg-gray-200 border-b w-1/2">
+          <div class="px-5 py-6 text-gray-700 bg-gray-50 border-b w-1/2">
             <label class="text-xs">Last Name</label>
             <div class="relative mt-2 rounded-md shadow-sm">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
@@ -68,13 +93,13 @@ const register = () => {
 
               <input
                 type="text"
-                v-model="user.lastName"
-                class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                v-model="lastName"
+                class="w-full px-12 py-2 border-transparent rounded-md shadow-md appearance-none input"
               />
             </div>
           </div>
           <!-- Email -->
-          <div class="px-5 py-6 text-gray-700 bg-gray-200 border-b w-1/2">
+          <div class="px-5 py-6 text-gray-700 bg-gray-50 border-b w-1/2">
             <label class="text-xs">Email</label>
             <div class="relative mt-2 rounded-md shadow-sm">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
@@ -90,13 +115,13 @@ const register = () => {
 
               <input
                 type="Email"
-                v-model="user.email"
-                class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                v-model="email"
+                class="w-full px-12 py-2 border-transparent rounded-md shadow-md appearance-none input"
               />
             </div>
           </div>
           <!-- User Role -->
-          <div class="px-5 py-6 text-gray-700 bg-gray-200 border-b w-1/2">
+          <div class="px-5 py-6 text-gray-700 bg-gray-50 border-b w-1/2">
             <label class="text-xs">User Role</label>
             <div class="relative mt-2 rounded-md shadow-sm">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-600">
@@ -112,12 +137,12 @@ const register = () => {
 
               <select
                 name="UserRole"
-                v-model="user.userRole"
-                class="w-full px-12 py-2 border-transparent rounded-md appearance-none focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                v-model="role"
+                class="w-full px-12 py-2 border-transparent rounded-md shadow-md appearance-none input"
               >
-                <option>Admin</option>
-                <option>Manager</option>
-                <option>Employee</option>
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
+                <option value="employee">Employee</option>
               </select>
             </div>
           </div>
@@ -125,16 +150,30 @@ const register = () => {
         <!-- footer -->
         <div class="flex items-center justify-between px-5 py-3">
           <div>
-            <input type="checkbox" name="sendRegistration" v-model="user.sendRegistration" />
+            <input type="checkbox" name="sendRegistration" v-model="sendRegistration" />
             <label for="vehicle1"> Send Registration </label>
           </div>
-          <button
+          <el-button
+            plain
+            @click="CreateOperator"
             class="px-3 py-1 text-sm text-white bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none"
           >
             Save
-          </button>
+          </el-button>
         </div>
       </form>
     </div>
   </div>
 </template>
+
+<style scoped>
+.input {
+  border: solid #bbb 1px;
+}
+.input:focus {
+  border: solid #4f46e5 1px;
+  --tw-ring-color: rgb(99 102 241);
+  outline: none;
+  transition: all 0.3s ease;
+}
+</style>

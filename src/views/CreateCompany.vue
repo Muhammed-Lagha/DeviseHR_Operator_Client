@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Breadcrumb from '@/partials/Breadcrumb.vue'
 import CreateCompanyForm from '@/components/layout/Forms/CreateCompanyForm.vue'
 </script>
