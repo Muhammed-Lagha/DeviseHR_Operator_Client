@@ -9,7 +9,7 @@ import { useRouter } from 'vue-router'
 import { refreshRequest } from '@/Api/AuthRequestsApi'
 import type { TLoginRefreshUserResponse } from '@/Types/LoginAndRefreshResponse'
 import { addTokensToCookies, clearTokenCookies, getTokensFromCookies } from '@/utils/getTokens'
-import useUserStore from './stores/UserStore'
+import useUserStore from '@/stores/UserStore'
 import router from './router'
 
 const defaultLayout = 'default'
@@ -19,8 +19,6 @@ const userStore = useUserStore()
 
 onMounted(async () => {
   if (window.location.pathname !== '/registration') {
-    console.log('hi3')
-
     const [token, refreshToken] = getTokensFromCookies()
     let userDate: TLoginRefreshUserResponse = await refreshRequest(token, refreshToken)
 
