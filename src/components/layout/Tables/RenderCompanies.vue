@@ -87,7 +87,7 @@ const companies = ref<Company[]>([...Array(10).keys()].map(() => testCompany))
                     <img
                       class="w-10 h-10 rounded-full"
                       :class="Company.logo === null ? 'hidden' : 'block'"
-                      :src="Company.logo"
+                      :src="Company.logo!"
                       alt=""
                     />
                   </div>
