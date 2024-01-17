@@ -11,7 +11,10 @@ import NotFound from '@/views/NotFound.vue';
 import UiElements from '@/views/UiElements.vue'
 import Registration from '@/views/RegistrationView.vue'
 import MeProfile from '@/views/MeProfile.vue'
-//import SettingsView from '@/views/SettingsView.vue';
+import SearchResults from '@/views/SearchResults.vue'
+
+import Table from '@/views/TablesView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +42,11 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/table',
+      name: 'Table',
+      component: Table
+    },
+    {
       path: '/profile',
       name: 'Profile',
       component: MeProfile
@@ -46,12 +54,11 @@ const router = createRouter({
     {
       path: '/Operators',
       name: 'Operators',
-      
       component: OperatorsView
     },
     {
       path: '/operator/:id',
-      name: 'userProfile',
+      name: 'operatorProfile',
       component:  ProfileOpView
     },
     {
@@ -62,12 +69,17 @@ const router = createRouter({
     {
       path: '/users/:id',
       name: 'userProfile',
-      component:  ProfileUserView
+      component:  ProfileUserView,
     },
     {
       path: '/CreateCompany',
       name: 'CreateCompany',
       component: CreateCompany
+    },
+    {
+      path: '/searchResults',
+      name: 'searchResults',
+      component: SearchResults,
     },
     {
       path: '/CreateOperator',
