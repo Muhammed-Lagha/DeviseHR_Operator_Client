@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import type { opMembers } from '@/Types/Operators'
 import { RouterLink } from 'vue-router'
 import GenerateImage from '@/assets/Functions/GenerateImage.vue'
-import { getOperators } from '@/Connection/GetOperators'
-import { getAuthToken } from '@/helpers/getTokens'
-import { formatDate } from '@/helpers/formatDate'
+import { ref } from 'vue'
 
-onMounted(async () => {
-  const token = getAuthToken()
-  if (token) teamMembers.value = await getOperators(token)
-})
-
-const teamMembers = ref<opMembers[]>([])
+const props = defineProps<{
+  users?: Array<any>
+}>()
+const users = props.users
+console.log(props.users)
 </script>
 
 <template>
@@ -32,7 +27,7 @@ const teamMembers = ref<opMembers[]>([])
               <th
                 class="px-2 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
               >
-                Role
+                email
               </th>
               <th
                 class="px-2 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
@@ -42,13 +37,9 @@ const teamMembers = ref<opMembers[]>([])
               <th
                 class="px-2 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
               >
-                Verified
+                id
               </th>
-              <th
-                class="px-2 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-              >
-                Updated At
-              </th>
+
               <th class="px-2 py-3 border-b border-gray-200 bg-gray-50"></th>
             </tr>
           </thead>
@@ -56,7 +47,7 @@ const teamMembers = ref<opMembers[]>([])
           <tbody class="bg-white">
             <tr
               class="hover:rounded-md hover:shadow-[rgba(0,_0,_0,_0.05)_0px_6px_24px_0px,_rgba(0,_0,_0,_0.08)_0px_0px_0px_1px] transition-all duration-200"
-              v-for="(u, index) in teamMembers"
+              v-for="(u, index) in users"
               :key="index"
             >
               <td class="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
@@ -65,17 +56,11 @@ const teamMembers = ref<opMembers[]>([])
                     <div :class="u.profile_picture === null">
                       <GenerateImage :firstName="u.first_name" :lastName="u.last_name" />
                     </div>
-                    <img
-                      class="w-10 h-10 rounded-full"
-                      :class="u.profile_picture === null ? 'hidden' : 'block'"
-                      :src="u.profile_picture"
-                      alt=""
-                    />
                   </div>
 
                   <div class="ml-4">
                     <div class="text-sm font-medium leading-5 text-gray-900">
-                      {{ u.first_name }} {{ u.last_name }}
+                      {{ u?.first_name }} {{ u.last_name }}
                     </div>
                     <div class="text-sm leading-5 text-gray-500">
                       {{ u.email }}
@@ -132,12 +117,6 @@ const teamMembers = ref<opMembers[]>([])
                 >
                   {{ u.is_verified === true ? '✔️' : '✖️' }}</span
                 >
-              </td>
-
-              <td
-                class="px-2 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
-              >
-                {{ formatDate(u.updated_at) }}
               </td>
 
               <td

@@ -4,7 +4,7 @@ import company from '@/components/icons/SideNav/Companies.vue'
 
 import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
-import { useSidebar } from '@/hooks/useSidebar'
+import { useSidebar } from '@/Hooks/useSidebar'
 
 const { isOpen } = useSidebar()
 const activeClass = ref('bg-green-600 bg-opacity-25 text-gray-100 border-green-400')
