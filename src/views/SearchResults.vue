@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router'
 import { getAuthToken } from '@/utils/getTokens'
 import type { SearchCompany, SearchUser } from '@/Types/DTOs/SearchDto'
 import { onMounted, ref } from 'vue'
-import { getUserById } from '@/Api/GetUserById'
 
 const router = useRouter()
 const searchInput = router.currentRoute.value.query.search
