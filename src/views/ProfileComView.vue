@@ -35,6 +35,7 @@ onMounted(async () => {
 <template>
   <div>
     <Breadcrumb :breadcrumb="company?.name!" />
+
     <main class="text-[#0f1419] bg-[#fefefd] rounded-md">
       <div class="max-w-6xl -my-2 mx-auto border border-solid">
         <div class="border-b border-solid border-black border-opacity-[0.1]">
@@ -134,8 +135,8 @@ onMounted(async () => {
         </div>
         <!-- <footer class="p-4"></footer> -->
         <div class="p-4 mt-2">
-          <div class="">
-            <h2 class="ml-5 text-xl font-semibold leading-tight text-gray-700">Users</h2>
+          <div class="px-4 py-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <h2 class="text-xl font-semibold leading-tight text-gray-700">Users</h2>
             <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
               <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
                 <table class="min-w-full leading-normal">
