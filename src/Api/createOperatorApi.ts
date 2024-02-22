@@ -3,12 +3,12 @@ import { opApiConnection } from '@/utils/ConnectionStrings';
 
 
 
-export const createOperatorRequest = async (token: string, firstName: string, lastName: string, role: number, email: string ,sendRegistration: boolean) => {
+export const createOperatorRequest = async (token: string, firstName: string, lastName: string, user_type: string, email: string ,sendRegistration: boolean) => {
   try {
-    console.log('Operator details:', { firstName, lastName, role, email, sendRegistration });
+    console.log('Operator details:', { firstName, lastName, user_type, email, sendRegistration });
     const response = await axios.post(
       `${opApiConnection}/api/admin-operators/create-operator`,
-      { firstName, lastName, role, email, sendRegistration },
+      { firstName, lastName, user_type: Number(user_type), email, sendRegistration },
       { headers: { Authorization: `Bearer ${token}` } }
     )
     console.log('Response:', response.data)
