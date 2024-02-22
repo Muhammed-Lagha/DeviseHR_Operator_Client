@@ -7,7 +7,7 @@ import { getAuthToken } from '@/utils/getTokens'
 const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
-const role = ref('employee ')
+const user_type = ref('3') // 1 = admin, 2 = manager, 3 = operator
 const sendRegistration = ref(false)
 
 const CreateOperator = async () => {
@@ -18,7 +18,7 @@ const CreateOperator = async () => {
     token,
     firstName.value,
     lastName.value,
-    role.value,
+    user_type.value,
     email.value,
     sendRegistration.value
   )
@@ -137,12 +137,12 @@ const open2 = () => {
 
               <select
                 name="UserRole"
-                v-model="role"
+                v-model="user_type"
                 class="w-full px-12 py-2 border-transparent rounded-md shadow-md appearance-none input"
               >
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-                <option value="employee">Employee</option>
+                <option value="1">Admin</option>
+                <option value="2">Manager</option>
+                <option value="3">Employee</option>
               </select>
             </div>
           </div>

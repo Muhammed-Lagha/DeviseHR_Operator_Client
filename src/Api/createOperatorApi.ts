@@ -3,7 +3,7 @@ import { opApiConnection } from '@/utils/ConnectionStrings';
 
 
 
-export const createOperatorRequest = async (token: string, firstName: string, lastName: string, role: string, email: string ,sendRegistration: boolean) => {
+export const createOperatorRequest = async (token: string, firstName: string, lastName: string, role: number, email: string ,sendRegistration: boolean) => {
   try {
     console.log('Operator details:', { firstName, lastName, role, email, sendRegistration });
     const response = await axios.post(
