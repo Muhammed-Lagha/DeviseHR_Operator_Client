@@ -2,6 +2,7 @@
 import { editUserEmail } from '@/Api/EditUserEmail'
 import { getAuthToken } from '@/utils/getTokens'
 import { ref } from 'vue'
+import { ElNotification } from 'element-plus'
 
 const props = defineProps<{
   userId?: number
@@ -9,8 +10,21 @@ const props = defineProps<{
 
 const email = ref('')
 const editEmail = async () => {
+  console.log(email.value, props.userId)
   const token = getAuthToken()
-  if (token) await editUserEmail(token, email.value, props.userId)
+  if (token === null) throw new Error('no token')
+  const results = await editUserEmail(token, email.value, props.userId)
+  if (results?.message) {
+    open1(results.message)
+  } else {
+    open1('Email updated successfully')
+  }
+}
+const open1 = (message: any) => {
+  ElNotification({
+    title: 'Update User Email',
+    message: message
+  })
 }
 </script>
 <template>
@@ -18,7 +32,7 @@ const editEmail = async () => {
     <dl>
       <div class="grid grid-cols-2">
         <form class="px-4 py-3.5 mx-2 col-span-1 bg-gray-50 gap-2" @submit.prevent="editEmail">
-          <dt class="text-sm font-medium text-gray-500">Edit User Email {{ props.userId }}</dt>
+          <dt class="text-sm font-medium text-gray-500">Edit User Email {{ props.id }}</dt>
           <input
             v-model="email"
             class="mt-1 text-sm text-gray-900 p-2 border-1 border-gray-300 rounded-md input"
@@ -32,20 +46,6 @@ const editEmail = async () => {
             Save
           </button>
         </form>
-        <div class="px-4 py-3.5 col-span-1 bg-gray-50">
-          <nav class="flex justify-end items-center gap-2 group-[10px]">
-            <button
-              class="p-2 text-[#0f1419] text-sm font-semibold border-[1px] border-black rounded-md focus:outline-none hover:border-[#eafef3] hover:transition-[0.5s] hover:bg-[#eafef3] hover:text-[#2ecc71]"
-            >
-              Verify
-            </button>
-            <button
-              class="p-2 text-[#0f1419] text-sm font-semibold border-[1px] border-black rounded-md focus:outline-none hover:border-[#eafef3] hover:transition-[0.5s] hover:bg-[#fad7e3] hover:text-[#df8fa8]"
-            >
-              Terminate
-            </button>
-          </nav>
-        </div>
       </div>
     </dl>
   </div>

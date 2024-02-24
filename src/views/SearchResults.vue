@@ -23,8 +23,12 @@ const users = ref<SearchUser[]>([])
 
 <template>
   <div class="">
-    <div class="flex flex-col mt-8">
+    <div class="flex flex-col mt-2">
       <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <!-- Companies -->
+        <div class="mb-3">
+          <span class="text-2xl font-bold text-gray-700">Companies</span>
+        </div>
         <div
           class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
         >
@@ -131,8 +135,11 @@ const users = ref<SearchUser[]>([])
       </div>
     </div>
   </div>
+  <div class="mt-6">
+    <span class="text-2xl font-bold text-gray-700">Users</span>
+  </div>
   <div class="">
-    <div class="flex flex-col mt-8">
+    <div class="flex flex-col mt-2">
       <div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div
           class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"

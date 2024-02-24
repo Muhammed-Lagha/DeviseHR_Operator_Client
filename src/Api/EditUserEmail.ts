@@ -4,10 +4,13 @@ import axios from 'axios'
 export const editUserEmail = async (token: string, email: string , userId: number | undefined) => {
 
     try {
-        const response = await axios.post(
+        console.log('lol')
+        console.log(typeof email, typeof userId)
+        console.log(email, userId)
+        const response = await axios.patch(
             `${opApiConnection}/api/manage-company/edit-email`,
             {
-                userId,
+                id: userId,
                 email
             },
             {
@@ -17,7 +20,13 @@ export const editUserEmail = async (token: string, email: string , userId: numbe
                 }
             }
         )
-        return response.data.data
+        
+        const data = response.data.data
+        const message = response.data.message
+        console.log("lol222")
+        console.log(response);
+        return {data , message}
+
     } catch (error) {
         console.error('Error:', error)
     }
