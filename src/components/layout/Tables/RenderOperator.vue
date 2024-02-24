@@ -89,21 +89,26 @@ const teamMembers = ref<opMembers[]>([])
                   <span
                     :class="[
                       'p-2 rounded-lg font-bold bg-[#f1f2f6] inline-flex items-center first-letter:uppercase',
-                      u.user_role === 'admin'
+                      u.user_type === 1
                         ? 'bg-[#f4efff] text-[#9a84da]'
-                        : u.user_role === 'manager'
+                        : u.user_type === 2
                           ? 'bg-[#fff6e5] text-[#f4bd50]'
-                          : u.user_role === 'employee'
+                          : u.user_type === 3
                             ? 'bg-[#eaf2ff] text-[#739fdc]'
                             : 'bg-[#fbdde7] text-[#df8fa8]'
                     ]"
                   >
-                    {{ u.user_role }}
+                    {{
+                      u.user_type === 1
+                        ? 'Admin'
+                        : u.user_type === 2
+                          ? 'Manager'
+                          : u.user_type === 3
+                            ? 'Operator'
+                            : 'Employee'
+                    }}
                   </span>
                 </div>
-                <!-- <div class="text-sm leading-5 text-gray-500">
-                  {{ u.id }}
-                </div> -->
               </td>
 
               <td class="px-2 py-4 border-b border-gray-200 whitespace-nowrap">

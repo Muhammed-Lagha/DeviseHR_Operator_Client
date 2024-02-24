@@ -1,16 +1,14 @@
 import { opApiConnection } from '@/utils/ConnectionStrings';
 import axios from 'axios'
 
-export const editOperatorDetails = async (token: string, email: string | null, lastName: string | null, firstName: string | null, userId: number | undefined) => {
+export const editOperatorRole = async (token: string, user_type : string, userId: number | undefined ) => {
     try {
-        
+        console.log(user_type, userId);
         const response = await axios.patch(
-            `${opApiConnection}/api/admin-operators/edit-operator`,
+            `${opApiConnection}/api/admin-operators/edit-role`,
             {
                 opId : Number(userId),
-                firstName : firstName,
-                lastName : lastName,
-                email : email
+                user_type : Number(user_type)
             },
             {
                 headers: {

@@ -3,7 +3,7 @@ export interface opMembers {
   first_name: string;
   last_name: string;
   email: string;
-  user_role: string;
+  user_type: number;
   profile_picture?: string;
   is_verified: boolean;
   is_terminated: boolean;
