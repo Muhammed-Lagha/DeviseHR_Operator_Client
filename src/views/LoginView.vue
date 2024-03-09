@@ -17,26 +17,26 @@ const password = ref('password123')
 const showPassword = ref(false)
 
 const login = async () => {
-  const data: TLoginRefreshUserResponse = await loginRequest(email.value, password.value)
+  const userData: TLoginRefreshUserResponse = await loginRequest(email.value, password.value)
 
-  console.log(data)
+  console.log(userData)
 
-  if (data.success) {
-    addTokensToCookies(data.token, data.refreshToken)
-    let userDate: TLoginRefreshUserResponse = await refreshRequest(data.token, data.refreshToken)
-
-    userStore.user.email = userDate.data.email
-    userStore.user.firstName = userDate.data.first_name
-    userStore.user.lastName = userDate.data.last_name
-    userStore.user.id = userDate.data.id
-    userStore.user.user_role = userDate.data.user_role
-    userStore.user.profile_picture = userDate.data.profile_picture
-
-    router.push('/Home')
-  } else {
+  if (!userData.success) {
     showAlert.value = true
     alertMessage.value = 'Invalid email or password'
+    throw new Error('Invalid email or password')
   }
+
+  addTokensToCookies(userData.token, userData.refreshToken)
+
+  userStore.user.email = userData.data.email
+  userStore.user.firstName = userData.data.first_name
+  userStore.user.lastName = userData.data.last_name
+  userStore.user.id = userData.data.id
+  userStore.user.user_role = userData.data.user_role
+  userStore.user.profile_picture = userData.data.profile_picture
+
+  router.push('/Home')
 }
 const inputError = ref('border-red-500 focus:border-red-500 focus:ring-red-500')
 </script>

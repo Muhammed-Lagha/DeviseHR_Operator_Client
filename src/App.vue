@@ -32,6 +32,8 @@ onMounted(async () => {
 
           if (userDate.success) {
             userStore.user.id = userDate.data.id
+            userStore.user.firstName = userDate.data.first_name
+            userStore.user.lastName = userDate.data.last_name
             userStore.user.user_role = userDate.data.user_role
             addTokensToCookies(userDate.token, userDate.refreshToken)
           }
@@ -40,8 +42,6 @@ onMounted(async () => {
       )
 
       userStore.user.email = userDate.data.email
-      userStore.user.firstName = userDate.data.first_name
-      userStore.user.lastName = userDate.data.last_name
       userStore.user.id = userDate.data.id
       userStore.user.user_role = userDate.data.user_role
       userStore.user.profile_picture = userDate.data.profile_picture

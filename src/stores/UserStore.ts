@@ -9,6 +9,7 @@ interface User {
     user_role?: string | null;
   }
   
+  
   const useUserStore = defineStore('user', {
     state: (): { user: User } => ({
       user: {
