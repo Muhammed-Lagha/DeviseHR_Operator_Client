@@ -4,9 +4,6 @@ import { opApiConnection } from '@/utils/ConnectionStrings';
 
 export const createCompany = async (token: string , companyName: string ,firstName : string, lastName : string , email : string, expirationDate : string, phoneNumber : string, maxEmployeesAllowed : number, licenceNumber : string, accountNumber : string, sendRegistration : boolean) => {
   try{
-    console.log( typeof  maxEmployeesAllowed);
-    console.log(companyName);
-    
     const response = await axios.post(
       `${opApiConnection}/api/admin-company/create-company`,
       { 

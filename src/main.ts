@@ -22,3 +22,4 @@ app.component("default-layout", MainComponentVue);
 app.component("empty-layout", EmptyLayout);
 
 app.mount('#app')
+
